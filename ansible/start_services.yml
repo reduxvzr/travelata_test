@@ -1,0 +1,61 @@
+---
+- name: Install haproxy and run service
+  hosts: haproxy
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install HAProxy
+      ansible.builtin.apt:
+        name: haproxy
+        state: present
+        update_cache: true
+        install_recommends: true
+
+    - name: Check service status
+      ansible.builtin.service:
+        name: haproxy
+        state: started
+        enabled: true
+
+
+- name: Install PostgreSQL and check status
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install PostgreSQL
+      ansible.builtin.apt:
+        name: postgresql
+        state: present
+        update_cache: true
+        install_recommends: false
+
+    - name: Check service
+      ansible.builtin.service:
+        name: postgresql
+        state: started
+        enabled: true
+
+- name: Correct configs for PostgreSQL on master node
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Edit or ensure port for the service
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/15/main/postgresql.conf
+        regexp: '^port ='
+        line: port = 5001
+        state: present
+
+    - name: Let's listen all incoming connections
+      ansible.builtin.lineinfile:
+        path: /etc/postgresql/15/main/postgresql.conf
+        regexp: '^\s*listen_addresses\s*='
+        line: 'listen_addresses = "*"'
+        state: present
+
+    - name: Restart service after editing of configs
+      ansible.builtin.service:
+        name: postgresql
+        state: restarted
