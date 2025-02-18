@@ -36,7 +36,7 @@
         state: started
         enabled: true
 
-- name: Correct configs for PostgreSQL on master node
+- name: Correct configs for PostgreSQL on the master node
   hosts: master
   become: true
   gather_facts: false
