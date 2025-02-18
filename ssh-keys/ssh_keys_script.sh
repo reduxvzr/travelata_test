@@ -22,3 +22,5 @@ for i in $(seq $starting $ending); do
         echo $pass | sudo -S systemctl restart ssh
     "
 done
+
+
