@@ -1,0 +1,423 @@
+2025-02-18 20:47:35,842 p=1291225 u=digitd n=ansible WARNING| [WARNING]:  * Failed to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini with ini plugin: /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini:2: Expected key=value host variable assignment, got: db.test.lan
+
+2025-02-18 20:47:35,843 p=1291225 u=digitd n=ansible WARNING| [WARNING]: Unable to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini as an inventory source
+
+2025-02-18 20:47:35,869 p=1291225 u=digitd n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-18 20:47:35,896 p=1291225 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    }
+}
+2025-02-18 20:49:09,247 p=1294121 u=digitd n=ansible WARNING| [WARNING]:  * Failed to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini with ini plugin: /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini:2: Expected key=value host variable assignment, got: db.test.lan
+
+2025-02-18 20:49:09,247 p=1294121 u=digitd n=ansible WARNING| [WARNING]: Unable to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini as an inventory source
+
+2025-02-18 20:49:09,295 p=1294121 u=digitd n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-18 20:49:09,322 p=1294121 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    }
+}
+2025-02-18 20:49:43,982 p=1295186 u=digitd n=ansible WARNING| [WARNING]:  * Failed to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini with ini plugin: /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini:11: Section [cluser:children] includes undefined group: node_hapr
+
+2025-02-18 20:49:43,982 p=1295186 u=digitd n=ansible WARNING| [WARNING]: Unable to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini as an inventory source
+
+2025-02-18 20:49:44,000 p=1295186 u=digitd n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-18 20:49:44,036 p=1295186 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    }
+}
+2025-02-18 20:49:56,899 p=1295500 u=digitd n=ansible WARNING| [WARNING]:  * Failed to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini with ini plugin: /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini:15: Section [cluster:vars] not valid for undefined group: cluster
+
+2025-02-18 20:49:56,899 p=1295500 u=digitd n=ansible WARNING| [WARNING]: Unable to parse /run/media/digitd/NFS/git/travelata_test/ansible/cluster.ini as an inventory source
+
+2025-02-18 20:49:56,932 p=1295500 u=digitd n=ansible WARNING| [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-18 20:49:56,968 p=1295500 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    }
+}
+2025-02-18 20:50:10,044 p=1295952 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "master"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "slave"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_use": "node_hapr",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    }
+}
+2025-02-18 20:50:18,220 p=1296183 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "master"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "slave"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_use": "node_hapr",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    }
+}
+2025-02-18 20:51:10,992 p=1297723 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    }
+}
+2025-02-18 20:51:12,475 p=1297828 u=digitd n=ansible INFO| {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key": "../ssh-keys/.keys/.my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    }
+}
+2025-02-18 20:53:18,220 p=1301286 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 20:53:25,431 p=1301549 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.",
+    "unreachable": true
+}
+2025-02-18 20:53:26,424 p=1301549 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.",
+    "unreachable": true
+}
+2025-02-18 20:53:26,601 p=1301549 u=digitd n=ansible INFO| db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: Host key verification failed.",
+    "unreachable": true
+}
+2025-02-18 20:53:35,468 p=1301760 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:04:39,613 p=1321749 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:05:30,735 p=1323396 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:07:40,323 p=1327320 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:07:40,325 p=1327320 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:07:48,939 p=1327320 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:07:59,609 p=1327934 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:07:59,630 p=1327934 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:08:01,221 p=1327934 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:09:02,340 p=1330123 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:09:02,347 p=1330123 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: root@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-18 21:09:04,010 p=1330123 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-02-18 21:09:30,679 p=1330323 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.master.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:30,680 p=1330323 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:09:32,164 p=1330323 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.slave.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:32,165 p=1330323 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:09:38,892 p=1330323 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.test.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:38,892 p=1330323 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:09:42,208 p=1331569 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.master.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:42,208 p=1331569 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:09:42,350 p=1331569 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.test.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:42,890 p=1331569 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:09:43,192 p=1331569 u=digitd n=ansible WARNING| [WARNING]: Platform linux on host db.slave.lan is using the discovered Python interpreter at /usr/bin/python3.11, but future installation of another Python interpreter could change the meaning of that path. See https://docs.ansible.com/ansible-
+core/2.18/reference_appendices/interpreter_discovery.html for more information.
+
+2025-02-18 21:09:43,345 p=1331569 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:07,992 p=1334089 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:08,000 p=1334089 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:08,467 p=1334089 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:13,200 p=1334305 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:13,205 p=1334305 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-18 21:11:14,493 p=1334305 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}

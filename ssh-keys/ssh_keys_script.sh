@@ -16,11 +16,13 @@ for i in $(seq $starting $ending); do
     ssh-keyscan -H $ip >> ~/.ssh/known_hosts
     echo -e "\nВставка ключей в файл authorized_keys $ip \n"
     sshpass -p $pass ssh -o HostKeyAlgorithms=+ssh-rsa -o ConnectTimeout=4 -o KexAlgorithms=+diffie-hellman-group-exchange-sha1 -o KexAlgorithms=+diffie-hellman-group14-sha1 -o KexAlgorithms=+diffie-hellman-group1-sha1 -t root@$ip "
-        mkdir -p /home/*/.ssh &&
-        touch /home/*/.ssh/authorized_keys &&
-        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO91EHWdaQCtR/0uX5u//MzTZd5OACiwcsu3fzvuswrF digitd@DESKTOP-BP8SOQ1' >> /home/*/.ssh/authorized_keys &&
+        for user_dir in /home/*; do
+            mkdir -p \"\$user_dir/.ssh\"
+            touch \"\$user_dir/.ssh/authorized_keys\"
+            echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL7lPzw1H3lW1v7uYW/W+i9UyEBXw0B0pOk+CLY2lrZ/ digitd@archPC' > \"\$user_dir/.ssh/authorized_keys\"
+        done
+        mkdir -p /root/.ssh
+        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL7lPzw1H3lW1v7uYW/W+i9UyEBXw0B0pOk+CLY2lrZ/ digitd@archPC' > /root/.ssh/authorized_keys
         echo $pass | sudo -S systemctl restart ssh
     "
 done
-
-
