@@ -52,10 +52,68 @@
       ansible.builtin.lineinfile:
         path: /etc/postgresql/15/main/postgresql.conf
         regexp: '^\s*listen_addresses\s*='
-        line: 'listen_addresses = "*"'
+        line: "listen_addresses = '*'"
         state: present
 
     - name: Restart service after editing of configs
       ansible.builtin.service:
         name: postgresql
         state: restarted
+
+- name: Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)
+  hosts: vip_hap
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Edit or ensure config file for haproxy
+      ansible.builtin.copy:
+        src: ../config_files/haproxy.cfg
+        dest: /etc/haproxy/haproxy.cfg
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Restart haproxy service
+      ansible.builtin.service:
+        name: haproxy
+        enabled: true
+        state: restarted
+
+
+- name: Run keepalived services for MASTER Haproxy
+  hosts: haproxy_vip
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Run keepalived on MASTER HAProxy node
+      ansible.builtin.copy:
+        src: ../config_files/keepalived_master_haproxy.conf
+        dest: /etc/keepalived/keepalived.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ensure or run keepalived service for Master
+      ansible.builtin.service:
+        name: keepalived
+        state: restarted
+        enabled: true
+
+- name: Run keepalived services for BACKUP Haproxy
+  hosts: haproxy_vip
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Run keepalived on BACKUP HAProxy node
+      ansible.builtin.copy:
+        src: ../config_files/keepalived_backup_haproxy.conf
+        dest: /etc/keepalived/keepalived.conf
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Ensure or run keepalived service for BACKUP
+      ansible.builtin.service:
+        name: keepalived
+        state: restarted
+        enabled: true

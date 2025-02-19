@@ -604,3 +604,554 @@ name: Install haproxy and run service
 2025-02-18 23:10:58,414 p=1547492 u=digitd n=ansible INFO| db.master.lan              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-18 23:10:58,447 p=1547492 u=digitd n=ansible INFO| db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-18 23:10:58,489 p=1547492 u=digitd n=ansible INFO| db.test.lan                : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 13:50:46,707 p=22905 u=digitd n=ansible | db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-19 13:50:46,745 p=22905 u=digitd n=ansible | db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-19 13:50:46,748 p=22905 u=digitd n=ansible | db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-19 14:00:58,502 p=24985 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:00:58,516 p=24985 u=digitd n=ansible | db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:00:58,569 p=24985 u=digitd n=ansible | db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:14:47,303 p=28124 u=digitd n=ansible | [WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+2025-02-19 14:14:47,317 p=28124 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip-hap"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy-vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip-hap": {
+        "children": [
+            "haproxy",
+            "haproxy-vip"
+        ]
+    }
+}
+2025-02-19 14:14:58,431 p=28204 u=digitd n=ansible | ansible-inventory [core 2.14.18]
+  config file = /home/digitd/travelata/ansible/ansible.cfg
+  configured module search path = ['/home/digitd/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  ansible collection location = /home/digitd/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-inventory
+  python version = 3.11.2 (main, Sep 14 2024, 03:00:30) [GCC 12.2.0] (/usr/bin/python3)
+  jinja version = 3.1.2
+  libyaml = True
+2025-02-19 14:14:58,431 p=28204 u=digitd n=ansible | Using /home/digitd/travelata/ansible/ansible.cfg as config file
+2025-02-19 14:14:58,438 p=28204 u=digitd n=ansible | [WARNING]: Invalid characters were found in group names but not replaced, use -vvvv to see details
+
+2025-02-19 14:14:58,454 p=28204 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip-hap"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy-vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip-hap": {
+        "children": [
+            "haproxy",
+            "haproxy-vip"
+        ]
+    }
+}
+2025-02-19 14:15:34,596 p=28350 u=digitd n=ansible | ansible-inventory [core 2.14.18]
+  config file = /home/digitd/travelata/ansible/ansible.cfg
+  configured module search path = ['/home/digitd/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  ansible collection location = /home/digitd/.ansible/collections:/usr/share/ansible/collections
+  executable location = /usr/bin/ansible-inventory
+  python version = 3.11.2 (main, Sep 14 2024, 03:00:30) [GCC 12.2.0] (/usr/bin/python3)
+  jinja version = 3.1.2
+  libyaml = True
+2025-02-19 14:15:34,596 p=28350 u=digitd n=ansible | Using /home/digitd/travelata/ansible/ansible.cfg as config file
+2025-02-19 14:15:34,618 p=28350 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip_hap"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy_vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip_hap": {
+        "children": [
+            "haproxy",
+            "haproxy_vip"
+        ]
+    }
+}
+2025-02-19 14:15:39,852 p=28388 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip_hap"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "master",
+            "slave"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy_vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip_hap": {
+        "children": [
+            "haproxy",
+            "haproxy_vip"
+        ]
+    }
+}
+2025-02-19 14:16:26,618 p=28685 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:16:31,468 p=28685 u=digitd n=ansible |  [ERROR]: User interrupted execution
+
+2025-02-19 14:16:49,961 p=28859 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: digitd@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-19 14:16:50,281 p=28859 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:22:57,606 p=30530 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: digitd@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-19 14:22:59,299 p=30530 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:26:15,691 p=31488 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:26:16,028 p=31488 u=digitd n=ansible | db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-19 14:47:17,317 p=3681 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 14:47:17,343 p=3681 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 14:47:24,468 p=3681 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 14:47:24,472 p=3681 u=digitd n=ansible | TASK [Check service status] *************************************************************************************************************************************************************************
+2025-02-19 14:47:26,653 p=3681 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 14:47:26,674 p=3681 u=digitd n=ansible | PLAY [Install PostgreSQL and check status] **********************************************************************************************************************************************************
+2025-02-19 14:47:26,683 p=3681 u=digitd n=ansible | TASK [Install PostgreSQL] ***************************************************************************************************************************************************************************
+2025-02-19 14:47:38,943 p=3681 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 14:47:39,267 p=3681 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:47:39,269 p=3681 u=digitd n=ansible | TASK [Check service] ********************************************************************************************************************************************************************************
+2025-02-19 14:47:41,041 p=3681 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:47:41,193 p=3681 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 14:47:41,212 p=3681 u=digitd n=ansible | PLAY [Correct configs for PostgreSQL on the master node] ********************************************************************************************************************************************
+2025-02-19 14:47:41,217 p=3681 u=digitd n=ansible | TASK [Edit or ensure port for the service] **********************************************************************************************************************************************************
+2025-02-19 14:47:41,707 p=3681 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:47:41,711 p=3681 u=digitd n=ansible | TASK [Let's listen all incoming connections] ********************************************************************************************************************************************************
+2025-02-19 14:47:42,122 p=3681 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-19 14:47:42,126 p=3681 u=digitd n=ansible | TASK [Restart service after editing of configs] *****************************************************************************************************************************************************
+2025-02-19 14:47:44,054 p=3681 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-19 14:47:44,067 p=3681 u=digitd n=ansible | PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] ************************************************************************************************
+2025-02-19 14:47:44,082 p=3681 u=digitd n=ansible | TASK [Edit or ensure config file for haproxy] *******************************************************************************************************************************************************
+2025-02-19 14:47:45,428 p=3681 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 14:47:45,653 p=3681 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 14:47:45,659 p=3681 u=digitd n=ansible | TASK [Restart haproxy service] **********************************************************************************************************************************************************************
+2025-02-19 14:47:46,877 p=3681 u=digitd n=ansible | [WARNING]: Module invocation had junk after the JSON data:   Broadcast message from systemd-journald@haproxydeb (Wed 2025-02-19 14:47:46 MSK):    haproxy[2097]: backend master_back has no server
+available!      Broadcast message from systemd-journald@haproxydeb (Wed 2025-02-19 14:47:46 MSK):    haproxy[2097]: backend master_back has no server available!
+
+2025-02-19 14:47:46,905 p=3681 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 14:47:47,645 p=3681 u=digitd n=ansible | [WARNING]: Module invocation had junk after the JSON data:   Broadcast message from systemd-journald@haproxyvip (Wed 2025-02-19 14:47:47 MSK):    haproxy[30455]: backend master_back has no server
+available!      Broadcast message from systemd-journald@haproxyvip (Wed 2025-02-19 14:47:47 MSK):    haproxy[30455]: backend master_back has no server available!
+
+2025-02-19 14:47:47,669 p=3681 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 14:47:47,684 p=3681 u=digitd n=ansible | PLAY [Run keepalived services for MASTER Haproxy] ***************************************************************************************************************************************************
+2025-02-19 14:47:47,694 p=3681 u=digitd n=ansible | TASK [Run keepalived on MASTER HAProxy node] ********************************************************************************************************************************************************
+2025-02-19 14:47:47,787 p=3681 u=digitd n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-02-19 14:47:47,788 p=3681 u=digitd n=ansible | fatal: [db.test1.lan]: FAILED! => {"changed": false, "msg": "Could not find or access '../config_files/keepalived_master_haproxy.cfg'\nSearched in:\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+2025-02-19 14:47:47,788 p=3681 u=digitd n=ansible | PLAY RECAP ******************************************************************************************************************************************************************************************
+2025-02-19 14:47:47,789 p=3681 u=digitd n=ansible | db.master.lan              : ok=5    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:47:47,789 p=3681 u=digitd n=ansible | db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:47:47,789 p=3681 u=digitd n=ansible | db.test.lan                : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:47:47,789 p=3681 u=digitd n=ansible | db.test1.lan               : ok=2    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:51:07,885 p=5067 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 14:51:07,894 p=5067 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 14:52:21,998 p=5067 u=digitd n=ansible |  [ERROR]: User interrupted execution
+
+2025-02-19 14:52:23,350 p=5379 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 14:52:23,365 p=5379 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 14:53:17,592 p=5379 u=digitd n=ansible |  [ERROR]: User interrupted execution
+
+2025-02-19 14:58:58,828 p=7382 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 14:58:58,839 p=7382 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 14:59:00,939 p=7382 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 14:59:00,942 p=7382 u=digitd n=ansible | TASK [Check service status] *************************************************************************************************************************************************************************
+2025-02-19 14:59:02,443 p=7382 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 14:59:02,450 p=7382 u=digitd n=ansible | PLAY [Install PostgreSQL and check status] **********************************************************************************************************************************************************
+2025-02-19 14:59:02,462 p=7382 u=digitd n=ansible | TASK [Install PostgreSQL] ***************************************************************************************************************************************************************************
+2025-02-19 14:59:04,500 p=7382 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 14:59:04,523 p=7382 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:59:04,526 p=7382 u=digitd n=ansible | TASK [Check service] ********************************************************************************************************************************************************************************
+2025-02-19 14:59:05,621 p=7382 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 14:59:05,644 p=7382 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:59:05,656 p=7382 u=digitd n=ansible | PLAY [Correct configs for PostgreSQL on the master node] ********************************************************************************************************************************************
+2025-02-19 14:59:05,665 p=7382 u=digitd n=ansible | TASK [Edit or ensure port for the service] **********************************************************************************************************************************************************
+2025-02-19 14:59:06,192 p=7382 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:59:06,194 p=7382 u=digitd n=ansible | TASK [Let's listen all incoming connections] ********************************************************************************************************************************************************
+2025-02-19 14:59:06,614 p=7382 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 14:59:06,616 p=7382 u=digitd n=ansible | TASK [Restart service after editing of configs] *****************************************************************************************************************************************************
+2025-02-19 14:59:11,904 p=7382 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-19 14:59:11,912 p=7382 u=digitd n=ansible | PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] ************************************************************************************************
+2025-02-19 14:59:11,925 p=7382 u=digitd n=ansible | TASK [Edit or ensure config file for haproxy] *******************************************************************************************************************************************************
+2025-02-19 14:59:13,002 p=7382 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 14:59:13,192 p=7382 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 14:59:13,194 p=7382 u=digitd n=ansible | TASK [Restart haproxy service] **********************************************************************************************************************************************************************
+2025-02-19 14:59:14,459 p=7382 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 14:59:14,495 p=7382 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 14:59:14,512 p=7382 u=digitd n=ansible | PLAY [Run keepalived services for MASTER Haproxy] ***************************************************************************************************************************************************
+2025-02-19 14:59:14,519 p=7382 u=digitd n=ansible | TASK [Run keepalived on MASTER HAProxy node] ********************************************************************************************************************************************************
+2025-02-19 14:59:14,612 p=7382 u=digitd n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-02-19 14:59:14,613 p=7382 u=digitd n=ansible | fatal: [db.test1.lan]: FAILED! => {"changed": false, "msg": "Could not find or access '../config_files/keepalived_master_haproxy.cfg'\nSearched in:\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+2025-02-19 14:59:14,613 p=7382 u=digitd n=ansible | PLAY RECAP ******************************************************************************************************************************************************************************************
+2025-02-19 14:59:14,614 p=7382 u=digitd n=ansible | db.master.lan              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:59:14,614 p=7382 u=digitd n=ansible | db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:59:14,614 p=7382 u=digitd n=ansible | db.test.lan                : ok=4    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 14:59:14,614 p=7382 u=digitd n=ansible | db.test1.lan               : ok=2    changed=2    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:00:53,777 p=8185 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 15:00:53,785 p=8185 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 15:00:56,659 p=8185 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:00:56,662 p=8185 u=digitd n=ansible | TASK [Check service status] *************************************************************************************************************************************************************************
+2025-02-19 15:00:58,218 p=8185 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:00:58,227 p=8185 u=digitd n=ansible | PLAY [Install PostgreSQL and check status] **********************************************************************************************************************************************************
+2025-02-19 15:00:58,242 p=8185 u=digitd n=ansible | TASK [Install PostgreSQL] ***************************************************************************************************************************************************************************
+2025-02-19 15:01:00,243 p=8185 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 15:01:00,366 p=8185 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:01:00,369 p=8185 u=digitd n=ansible | TASK [Check service] ********************************************************************************************************************************************************************************
+2025-02-19 15:01:01,462 p=8185 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:01:01,478 p=8185 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 15:01:01,495 p=8185 u=digitd n=ansible | PLAY [Correct configs for PostgreSQL on the master node] ********************************************************************************************************************************************
+2025-02-19 15:01:01,500 p=8185 u=digitd n=ansible | TASK [Edit or ensure port for the service] **********************************************************************************************************************************************************
+2025-02-19 15:01:01,992 p=8185 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:01:01,995 p=8185 u=digitd n=ansible | TASK [Let's listen all incoming connections] ********************************************************************************************************************************************************
+2025-02-19 15:01:02,400 p=8185 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:01:02,402 p=8185 u=digitd n=ansible | TASK [Restart service after editing of configs] *****************************************************************************************************************************************************
+2025-02-19 15:01:07,511 p=8185 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-19 15:01:07,522 p=8185 u=digitd n=ansible | PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] ************************************************************************************************
+2025-02-19 15:01:07,535 p=8185 u=digitd n=ansible | TASK [Edit or ensure config file for haproxy] *******************************************************************************************************************************************************
+2025-02-19 15:01:08,509 p=8185 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:01:08,690 p=8185 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-19 15:01:08,692 p=8185 u=digitd n=ansible | TASK [Restart haproxy service] **********************************************************************************************************************************************************************
+2025-02-19 15:01:09,934 p=8185 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 15:01:09,958 p=8185 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 15:01:09,974 p=8185 u=digitd n=ansible | PLAY [Run keepalived services for MASTER Haproxy] ***************************************************************************************************************************************************
+2025-02-19 15:01:09,979 p=8185 u=digitd n=ansible | TASK [Run keepalived on MASTER HAProxy node] ********************************************************************************************************************************************************
+2025-02-19 15:01:10,070 p=8185 u=digitd n=ansible | An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-02-19 15:01:10,070 p=8185 u=digitd n=ansible | fatal: [db.test1.lan]: FAILED! => {"changed": false, "msg": "Could not find or access '../config_files/keepalived_master_haproxy.cfg'\nSearched in:\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/files/../config_files/keepalived_master_haproxy.cfg\n\t/home/digitd/travelata/ansible/../config_files/keepalived_master_haproxy.cfg on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+2025-02-19 15:01:10,071 p=8185 u=digitd n=ansible | PLAY RECAP ******************************************************************************************************************************************************************************************
+2025-02-19 15:01:10,071 p=8185 u=digitd n=ansible | db.master.lan              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:01:10,071 p=8185 u=digitd n=ansible | db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:01:10,071 p=8185 u=digitd n=ansible | db.test.lan                : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:01:10,071 p=8185 u=digitd n=ansible | db.test1.lan               : ok=2    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:02:19,168 p=8930 u=digitd n=ansible | PLAY [Install haproxy and run service] **************************************************************************************************************************************************************
+2025-02-19 15:02:19,179 p=8930 u=digitd n=ansible | TASK [Install HAProxy] ******************************************************************************************************************************************************************************
+2025-02-19 15:02:21,175 p=8930 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:02:21,178 p=8930 u=digitd n=ansible | TASK [Check service status] *************************************************************************************************************************************************************************
+2025-02-19 15:02:22,751 p=8930 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:02:22,767 p=8930 u=digitd n=ansible | PLAY [Install PostgreSQL and check status] **********************************************************************************************************************************************************
+2025-02-19 15:02:22,781 p=8930 u=digitd n=ansible | TASK [Install PostgreSQL] ***************************************************************************************************************************************************************************
+2025-02-19 15:02:24,871 p=8930 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 15:02:24,904 p=8930 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:02:24,906 p=8930 u=digitd n=ansible | TASK [Check service] ********************************************************************************************************************************************************************************
+2025-02-19 15:02:26,025 p=8930 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-19 15:02:26,117 p=8930 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:02:26,137 p=8930 u=digitd n=ansible | PLAY [Correct configs for PostgreSQL on the master node] ********************************************************************************************************************************************
+2025-02-19 15:02:26,142 p=8930 u=digitd n=ansible | TASK [Edit or ensure port for the service] **********************************************************************************************************************************************************
+2025-02-19 15:02:26,666 p=8930 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:02:26,668 p=8930 u=digitd n=ansible | TASK [Let's listen all incoming connections] ********************************************************************************************************************************************************
+2025-02-19 15:02:27,069 p=8930 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-19 15:02:27,071 p=8930 u=digitd n=ansible | TASK [Restart service after editing of configs] *****************************************************************************************************************************************************
+2025-02-19 15:02:32,162 p=8930 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-19 15:02:32,173 p=8930 u=digitd n=ansible | PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] ************************************************************************************************
+2025-02-19 15:02:32,187 p=8930 u=digitd n=ansible | TASK [Edit or ensure config file for haproxy] *******************************************************************************************************************************************************
+2025-02-19 15:02:33,206 p=8930 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-19 15:02:33,452 p=8930 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-19 15:02:33,454 p=8930 u=digitd n=ansible | TASK [Restart haproxy service] **********************************************************************************************************************************************************************
+2025-02-19 15:02:34,746 p=8930 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-19 15:02:34,792 p=8930 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 15:02:34,806 p=8930 u=digitd n=ansible | PLAY [Run keepalived services for MASTER Haproxy] ***************************************************************************************************************************************************
+2025-02-19 15:02:34,814 p=8930 u=digitd n=ansible | TASK [Run keepalived on MASTER HAProxy node] ********************************************************************************************************************************************************
+2025-02-19 15:02:35,588 p=8930 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-19 15:02:35,590 p=8930 u=digitd n=ansible | TASK [Ensure or run keepalived service for Master] **************************************************************************************************************************************************
+2025-02-19 15:02:37,860 p=8930 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 15:02:37,870 p=8930 u=digitd n=ansible | PLAY [Run keepalived services for BACKUP Haproxy] ***************************************************************************************************************************************************
+2025-02-19 15:02:37,882 p=8930 u=digitd n=ansible | TASK [Run keepalived on BACKUP HAProxy node] ********************************************************************************************************************************************************
+2025-02-19 15:02:38,868 p=8930 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 15:02:38,871 p=8930 u=digitd n=ansible | TASK [Ensure or run keepalived service for BACKUP] **************************************************************************************************************************************************
+2025-02-19 15:02:41,079 p=8930 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-19 15:02:41,086 p=8930 u=digitd n=ansible | PLAY RECAP ******************************************************************************************************************************************************************************************
+2025-02-19 15:02:41,087 p=8930 u=digitd n=ansible | db.master.lan              : ok=5    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:02:41,087 p=8930 u=digitd n=ansible | db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:02:41,087 p=8930 u=digitd n=ansible | db.test.lan                : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-19 15:02:41,087 p=8930 u=digitd n=ansible | db.test1.lan               : ok=6    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
