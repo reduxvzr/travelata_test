@@ -117,3 +117,22 @@
         name: keepalived
         state: restarted
         enabled: true
+
+- name: Configure etcd on the MASTER database
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy etcd file
+      ansible.builtin.copy:
+        src: ../config_files/etcd
+        dest: /etc/default/etcd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Restart etcd service
+      ansible.builtin.service:
+        name: etcd
+        state: restarted
+        enabled: true
