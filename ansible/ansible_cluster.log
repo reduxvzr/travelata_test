@@ -1234,3 +1234,122 @@ available!      Broadcast message from systemd-journald@haproxyvip (Wed 2025-02-
 2025-02-20 12:59:59,324 p=9228 u=digitd n=ansible | db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-20 12:59:59,324 p=9228 u=digitd n=ansible | db.test.lan                : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-20 12:59:59,324 p=9228 u=digitd n=ansible | db.test1.lan               : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 20:50:41,823 p=1310292 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-20 20:50:41,923 p=1310292 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-20 20:50:41,991 p=1310292 u=digitd n=ansible INFO| db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-20 20:50:43,981 p=1310292 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-20 22:32:42,903 p=1490923 u=digitd n=ansible INFO| PLAY [Install haproxy and run service] *********************************************************************************************************************************************
+2025-02-20 22:32:42,907 p=1490923 u=digitd n=ansible INFO| TASK [Install HAProxy] *************************************************************************************************************************************************************
+2025-02-20 22:32:52,716 p=1490923 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:32:52,718 p=1490923 u=digitd n=ansible INFO| TASK [Check service status] ********************************************************************************************************************************************************
+2025-02-20 22:32:54,781 p=1490923 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:32:54,782 p=1490923 u=digitd n=ansible INFO| PLAY [Install PostgreSQL and check status] *****************************************************************************************************************************************
+2025-02-20 22:32:54,819 p=1490923 u=digitd n=ansible INFO| TASK [Install PostgreSQL] **********************************************************************************************************************************************************
+2025-02-20 22:32:58,399 p=1490923 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-02-20 22:33:04,355 p=1490923 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:33:04,356 p=1490923 u=digitd n=ansible INFO| TASK [Check service] ***************************************************************************************************************************************************************
+2025-02-20 22:33:05,427 p=1490923 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-02-20 22:33:06,168 p=1490923 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:33:06,169 p=1490923 u=digitd n=ansible INFO| PLAY [Correct configs for PostgreSQL on the master node] ***************************************************************************************************************************
+2025-02-20 22:33:06,227 p=1490923 u=digitd n=ansible INFO| TASK [Edit or ensure port for the service] *****************************************************************************************************************************************
+2025-02-20 22:33:06,754 p=1490923 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:33:06,755 p=1490923 u=digitd n=ansible INFO| TASK [Let's listen all incoming connections] ***************************************************************************************************************************************
+2025-02-20 22:33:07,226 p=1490923 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:33:07,227 p=1490923 u=digitd n=ansible INFO| TASK [Restart service after editing of configs] ************************************************************************************************************************************
+2025-02-20 22:33:13,380 p=1490923 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-02-20 22:33:13,382 p=1490923 u=digitd n=ansible INFO| PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] *******************************************************************************
+2025-02-20 22:33:13,427 p=1490923 u=digitd n=ansible INFO| TASK [Edit or ensure config file for haproxy] **************************************************************************************************************************************
+2025-02-20 22:33:14,419 p=1490923 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:33:14,468 p=1490923 u=digitd n=ansible INFO| ok: [db.test1.lan]
+2025-02-20 22:33:14,469 p=1490923 u=digitd n=ansible INFO| TASK [Restart haproxy service] *****************************************************************************************************************************************************
+2025-02-20 22:33:15,481 p=1490923 u=digitd n=ansible INFO| changed: [db.test.lan]
+2025-02-20 22:33:15,549 p=1490923 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:33:15,550 p=1490923 u=digitd n=ansible INFO| PLAY [Run keepalived services for MASTER Haproxy] **********************************************************************************************************************************
+2025-02-20 22:33:15,584 p=1490923 u=digitd n=ansible INFO| TASK [Run keepalived on MASTER HAProxy node] ***************************************************************************************************************************************
+2025-02-20 22:33:16,242 p=1490923 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:33:16,243 p=1490923 u=digitd n=ansible INFO| TASK [Ensure or run keepalived service for Master] *********************************************************************************************************************************
+2025-02-20 22:33:18,197 p=1490923 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:33:18,198 p=1490923 u=digitd n=ansible INFO| PLAY [Run keepalived services for BACKUP Haproxy] **********************************************************************************************************************************
+2025-02-20 22:33:18,233 p=1490923 u=digitd n=ansible INFO| TASK [Run keepalived on BACKUP HAProxy node] ***************************************************************************************************************************************
+2025-02-20 22:33:18,873 p=1490923 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:33:18,874 p=1490923 u=digitd n=ansible INFO| TASK [Ensure or run keepalived service for BACKUP] *********************************************************************************************************************************
+2025-02-20 22:33:20,940 p=1490923 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:33:20,941 p=1490923 u=digitd n=ansible INFO| PLAY [Configure etcd on the MASTER database] ***************************************************************************************************************************************
+2025-02-20 22:33:20,975 p=1490923 u=digitd n=ansible INFO| TASK [Copy etcd file] **************************************************************************************************************************************************************
+2025-02-20 22:33:21,085 p=1490923 u=digitd n=ansible INFO| An exception occurred during task execution. To see the full traceback, use -vvv. The error was: If you are using a module and expect the file to exist on the remote, see the remote_src option
+2025-02-20 22:33:21,086 p=1490923 u=digitd n=ansible INFO| fatal: [db.master.lan]: FAILED! => {"changed": false, "msg": "Could not find or access '../config_files/etcd'\nSearched in:\n\t/run/media/digitd/NFS/git/travelata/travelata_test/ansible/files/../config_files/etcd\n\t/run/media/digitd/NFS/git/travelata/travelata_test/ansible/../config_files/etcd\n\t/run/media/digitd/NFS/git/travelata/travelata_test/ansible/files/../config_files/etcd\n\t/run/media/digitd/NFS/git/travelata/travelata_test/ansible/../config_files/etcd on the Ansible Controller.\nIf you are using a module and expect the file to exist on the remote, see the remote_src option"}
+2025-02-20 22:33:21,140 p=1490923 u=digitd n=ansible INFO| PLAY RECAP *************************************************************************************************************************************************************************
+2025-02-20 22:33:21,190 p=1490923 u=digitd n=ansible INFO| db.master.lan              : ok=5    changed=1    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:33:21,240 p=1490923 u=digitd n=ansible INFO| db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:33:21,265 p=1490923 u=digitd n=ansible INFO| db.test.lan                : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:33:21,290 p=1490923 u=digitd n=ansible INFO| db.test1.lan               : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:33:49,775 p=1493388 u=digitd n=ansible INFO| PLAY [Install haproxy and run service] *********************************************************************************************************************************************
+2025-02-20 22:33:49,779 p=1493388 u=digitd n=ansible INFO| TASK [Install HAProxy] *************************************************************************************************************************************************************
+2025-02-20 22:33:52,721 p=1493388 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:33:52,722 p=1493388 u=digitd n=ansible INFO| TASK [Check service status] ********************************************************************************************************************************************************
+2025-02-20 22:33:53,919 p=1493388 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:33:53,920 p=1493388 u=digitd n=ansible INFO| PLAY [Install PostgreSQL and check status] *****************************************************************************************************************************************
+2025-02-20 22:33:53,956 p=1493388 u=digitd n=ansible INFO| TASK [Install PostgreSQL] **********************************************************************************************************************************************************
+2025-02-20 22:33:56,274 p=1493388 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-02-20 22:34:00,059 p=1493388 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:34:00,060 p=1493388 u=digitd n=ansible INFO| TASK [Check service] ***************************************************************************************************************************************************************
+2025-02-20 22:34:01,038 p=1493388 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-02-20 22:34:01,467 p=1493388 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:34:01,468 p=1493388 u=digitd n=ansible INFO| PLAY [Correct configs for PostgreSQL on the master node] ***************************************************************************************************************************
+2025-02-20 22:34:01,505 p=1493388 u=digitd n=ansible INFO| TASK [Edit or ensure port for the service] *****************************************************************************************************************************************
+2025-02-20 22:34:01,937 p=1493388 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:34:01,938 p=1493388 u=digitd n=ansible INFO| TASK [Let's listen all incoming connections] ***************************************************************************************************************************************
+2025-02-20 22:34:02,325 p=1493388 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:34:02,326 p=1493388 u=digitd n=ansible INFO| TASK [Restart service after editing of configs] ************************************************************************************************************************************
+2025-02-20 22:34:08,513 p=1493388 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-02-20 22:34:08,515 p=1493388 u=digitd n=ansible INFO| PLAY [Change haproxy.cfg and start load balance to the nodes (copy file from the project directory)] *******************************************************************************
+2025-02-20 22:34:08,555 p=1493388 u=digitd n=ansible INFO| TASK [Edit or ensure config file for haproxy] **************************************************************************************************************************************
+2025-02-20 22:34:09,334 p=1493388 u=digitd n=ansible INFO| ok: [db.test.lan]
+2025-02-20 22:34:09,336 p=1493388 u=digitd n=ansible INFO| ok: [db.test1.lan]
+2025-02-20 22:34:09,379 p=1493388 u=digitd n=ansible INFO| TASK [Restart haproxy service] *****************************************************************************************************************************************************
+2025-02-20 22:34:10,373 p=1493388 u=digitd n=ansible INFO| changed: [db.test.lan]
+2025-02-20 22:34:10,424 p=1493388 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:34:10,426 p=1493388 u=digitd n=ansible INFO| PLAY [Run keepalived services for MASTER Haproxy] **********************************************************************************************************************************
+2025-02-20 22:34:10,454 p=1493388 u=digitd n=ansible INFO| TASK [Run keepalived on MASTER HAProxy node] ***************************************************************************************************************************************
+2025-02-20 22:34:11,166 p=1493388 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:34:11,167 p=1493388 u=digitd n=ansible INFO| TASK [Ensure or run keepalived service for Master] *********************************************************************************************************************************
+2025-02-20 22:34:13,169 p=1493388 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:34:13,170 p=1493388 u=digitd n=ansible INFO| PLAY [Run keepalived services for BACKUP Haproxy] **********************************************************************************************************************************
+2025-02-20 22:34:13,204 p=1493388 u=digitd n=ansible INFO| TASK [Run keepalived on BACKUP HAProxy node] ***************************************************************************************************************************************
+2025-02-20 22:34:13,829 p=1493388 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:34:13,830 p=1493388 u=digitd n=ansible INFO| TASK [Ensure or run keepalived service for BACKUP] *********************************************************************************************************************************
+2025-02-20 22:34:15,866 p=1493388 u=digitd n=ansible INFO| changed: [db.test1.lan]
+2025-02-20 22:34:15,867 p=1493388 u=digitd n=ansible INFO| PLAY [Configure etcd on the MASTER database] ***************************************************************************************************************************************
+2025-02-20 22:34:15,997 p=1493388 u=digitd n=ansible INFO| TASK [Copy etcd file] **************************************************************************************************************************************************************
+2025-02-20 22:34:17,255 p=1493388 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-02-20 22:34:17,256 p=1493388 u=digitd n=ansible INFO| TASK [Restart etcd service] ********************************************************************************************************************************************************
+2025-02-20 22:34:20,433 p=1493388 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-02-20 22:34:20,434 p=1493388 u=digitd n=ansible INFO| PLAY RECAP *************************************************************************************************************************************************************************
+2025-02-20 22:34:20,477 p=1493388 u=digitd n=ansible INFO| db.master.lan              : ok=7    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:34:20,527 p=1493388 u=digitd n=ansible INFO| db.slave.lan               : ok=2    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:34:20,585 p=1493388 u=digitd n=ansible INFO| db.test.lan                : ok=4    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-20 22:34:20,618 p=1493388 u=digitd n=ansible INFO| db.test1.lan               : ok=6    changed=5    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,24 @@
+Host haproxydeb
+    HostName db.test.lan
+    User root
+    Port 22
+    IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key
+    
+Host masterdb
+    HostName db.master.lan
+    User root
+    Port 22
+    IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key
+    
+Host slavedb
+    HostName db.slave.lan
+    User root
+    Port 22
+    IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key
+    
+
+Host vipdb
+    Hostname db.test1.lan
+    User root
+    Port 22
+    IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key

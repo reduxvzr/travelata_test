@@ -1,0 +1,43 @@
+# path: /etc/default/etcd
+# config with global variables for etcd service
+
+ETCD_NAME="master_postgres" # name for this member
+
+#ETCD_DATA_DIR="/var/lib/etcd/default.etcd" dir for data, i use default value 
+
+# The client is a user who can access the data.
+# listen addresses for client traffic, in this case, etcd listen given port on all interfaces
+ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" 
+
+# how another nodes see this member, what ip address master advertise
+ETCD_ADVERTISE_CLIENT_URLS="http://db.master.lan:2379" 
+
+#ETCD_ADVERTISE_CLIENT_URLS="http://192.168.2.16:2379" ip address instead FQDN
+
+# The peer is a node in the cluster that can access or exchange data.
+# list of urls to listen for peer traffic. This flag tells etcd to accept incoming requests from its peer on the spicefied combinations.
+ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" 
+
+# how another nodes see this member, what ip address master advertise
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.2.16:2380" 
+
+#ETCD_CLUSTER="master_postgres=http://192.168.2.16:2380,slave_postgres=http://192.168.2.17:2380"
+
+ETCD_INITIAL_CLUSTER="master_postgres=http://192.168.2.16:2380"
+
+#ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-1"
+
+#ETCD_INITIAL_CLUSTER_STATE="new"
+
+#ETCD_AUTH_TOKEN="simple"
+
+#ETCD_ENABLE_AUTHORIZATION="true"
+
+ETCD_AUTO_COMPACTION_MODE="periodic"
+
+ETCD_AUTO_COMPACTION_RETENTION="1h"
+
+
+# If I wanna use ssl-certificates for etcd, i should use this variables:
+#ETCD_CERT_FILE= .../path/... for certificate
+#ETCD_KEY_FILE= .../path/.. for private key

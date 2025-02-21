@@ -125,7 +125,7 @@
   tasks:
     - name: Copy etcd file
       ansible.builtin.copy:
-        src: ../config_files/etcd
+        src: ../config_files/etcd_master
         dest: /etc/default/etcd
         owner: root
         group: root
