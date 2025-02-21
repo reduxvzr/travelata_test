@@ -1,0 +1,116 @@
+scope: postgres_cluster
+namespace: /postgresql_master/ 
+# name of the node
+name: master
+
+restapi: 
+  #  which address and port listen for restapi connection
+  listen: 192.168.2.16:8888 
+  # where connect
+  connect_address: 192.168.2.16:8888
+
+# rest-api certification, tls-connection
+#  certfile: /etc/ssl/certs/ssl-cert-snakeoil.pem
+#  keyfile: /etc/ssl/private/ssl-cert-snakeoil.key
+#  authentication:
+#    username: username
+#    password: password
+
+# ctl:
+#   insecure: false # Allow connections to SSL sites without certs
+#   certfile: /etc/ssl/certs/ssl-cert-snakeoil.pem
+#   cacert: /etc/ssl/certs/ssl-cacert-snakeoil.pem
+
+# I use etcd3 version: https://www.percona.com/blog/upgrading-to-the-new-etcd-version-from-3-3-for-patroni/
+etcd3: 
+  host: 127.0.0.1:2379
+
+# in the boostrap block is what will be done when initializing patroni
+bootstrap:
+
+  method: pg_createcluster
+  #pg_createcluster:
+  #  command: /usr/share/patroni/pg_createcluster_patroni
+
+  # Distributed Configuration Store - options bellow dcs will store in etcd
+  dcs:
+    ttl: 30
+    loop_wait: 10
+    retry_timeout: 10
+    maximum_lag_on_failover: 1048576
+    check_timeline: true
+    postgresql: 
+      use_pg_rewind: true
+
+  # user creation
+  users:
+    patroni_user:
+      password: '65673608'
+      options:
+        - createrole
+        - createdb
+
+    pg_hba:
+      # IPv4 local connections:
+      -  host    all             all             127.0.0.1/32            scram-sha-256
+      -  host    all             all             0.0.0.0/0               scram-sha-256
+      -  host    all             all             192.168.0.0/16          scram-sha-256
+      -  host    all             all             192.168.2.16/32         trust
+        # IPv6 local connections:
+      -  host    all             all             ::1/128                 scram-sha-256
+        # Allow replication connections from localhost, by a user with the
+        # replication privilege.
+      -  local   replication     all                                     peer
+      -  host    replication     all             127.0.0.1/32            scram-sha-256
+      -  host    replication     all             192.168.0.0/16          scram-sha-256
+
+      -  local    postgres       postgres                                trust
+# parameters for futures creations of databases 
+initdb:
+  # if problems with encoding appears, change value to cp1251    РІ psql \\! chcp 1251
+  - encoding: UTF8
+  - data-checksums 
+
+postgresql:
+    # important parameter. Enables fast sync for replics, without full restore from backup
+    use_pg_rewind: true
+    pg_ctl: /usr/lib/postgresql/15/bin/pg_ctluster
+    pg_bin: /usr/lib/postgresql/15/bin
+    #remove_data_directory_on_rewind_failure: true
+    
+    #remove_data_directory_on_diverged_timelines: true
+    #use_slots: true
+
+    data_dir: /mnt/postgres_patronidb
+    listen: 192.168.2.16:5050
+    connect_address: 192.168.2.16:5050
+    #port: 5001
+    #listen_addresses: '*'
+    #use_unix_socket: true
+    
+    
+    #pgpass: /var/lib/postgresql/@VERSION@-@CLUSTER@.pgpass
+    pgpass: /tmp/pgpass
+    authentication:
+      replication:
+        username: "patroni_repication"
+        password: "65673608"
+      # A superuser role is required in order for Patroni to manage the local
+      # Postgres instance.  If the option `use_unix_socket' is set to `true',
+      # then specifying an empty password results in no md5 password for the
+      # superuser being set and sockets being used for authentication. The
+      # `password:' line is nevertheless required.  Note that pg_rewind will not
+      # work if no md5 password is set unless a rewind user is configured, see
+      # below.
+      superuser:
+        username: "postgres"
+        password: '65673608' 
+      # A rewind role can be specified in order for Patroni to use on PostgreSQL
+      # 11 or later for pg_rewind, i.e. rewinding a former primary after failover
+      # without having to re-clone it. Patroni will assign this user the
+      # necessary permissions (that only exist from PostgreSQL)
+  #    rewind:
+  #      username: "rewind"
+  #      password: "rewind-pass"
+
+ 
