@@ -116,6 +116,18 @@
         state: restarted
         enabled: true
 
+- name: Clear etcd old values
+  hosts: etcd_cluster
+  become: true
+  gather_facts: false
+  tasks:
+  # I had problems with the cluster because of the residual values in etcd. If the cluster is just being created after tests, then:
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      # register: etcdctl_output
+      # changed_when: etcdctl_output.rc != 0
+      changed_when: false
+
 - name: Configure etcd on the MASTER database machine
   hosts: master
   become: true
@@ -129,10 +141,12 @@
         group: root
         mode: '0644'
 
+    # Create always empty directory
     - name: Create data directory
       ansible.builtin.file:
         path: /var/lib/etcd
         state: directory
+        force: true
         mode: '0770'
         owner: etcd
         group: etcd
@@ -145,19 +159,17 @@
           - etcd-discovery
         state: present
         update_cache: true
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      # register: etcdctl_output
+      # changed_when: etcdctl_output.rc != 0
+      changed_when: false
 
     - name: Restart etcd service
       ansible.builtin.service:
         name: etcd
         state: restarted
         enabled: true
-
-    # I had problems with the cluster because of the residual values in etcd. If the cluster is just being created after tests, then:
-    - name: Clear old values of the cluster in base
-      ansible.builtin.command: etcdctl del "" --prefix
-      # register: etcdctl_output
-      # changed_when: etcdctl_output.rc != 0
-      changed_when: false
 
 - name: Configure etcd on the SLAVE database machine
   hosts: slave
@@ -181,6 +193,11 @@
         state: present
         update_cache: true
 
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      # register: etcdctl_output
+      # changed_when: etcdctl_output.rc != 0
+      changed_when: false
 
     - name: Restart etcd service
       ansible.builtin.service:
@@ -188,6 +205,58 @@
         state: restarted
         enabled: true
 
+
+- name: Configure etcd on the another ETCD machine
+  hosts: etcd
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy etcd file
+      ansible.builtin.copy:
+        src: ../config_files/etcd_server
+        dest: /etc/default/etcd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Install etcd
+      ansible.builtin.apt:
+        pkg:
+          - etcd-client
+          - etcd-server
+          - etcd-discovery
+        state: present
+        update_cache: true
+
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      # register: etcdctl_output
+      # changed_when: etcdctl_output.rc != 0
+      changed_when: false
+
+    - name: Restart etcd service
+      ansible.builtin.service:
+        name: etcd
+        state: restarted
+        enabled: true
+
+    - name: Get status of etcd
+      ansible.builtin.command: etcdctl --cluster=true endpoint status --write-out=table
+      changed_when: false
+      register: etcd_status
+
+    - name: Print it
+      ansible.builtin.debug:
+        msg: "{{ etcd_status.stdout_lines }}"
+
+    - name: Get etcd members
+      ansible.builtin.command: etcdctl member list --write-out=table
+      changed_when: false
+      register: etcd_members
+
+    - name: Print it
+      ansible.builtin.debug:
+        msg: "{{ etcd_members.stdout_lines }}"
 
 - name: Copy patroni config (MASTER)
   hosts: master
@@ -240,6 +309,7 @@
       ansible.builtin.file:
         path: /var/lib/postgresql/15/data
         state: directory
+        force: true
         mode: '0750'
         owner: postgres
         group: postgres

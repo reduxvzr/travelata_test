@@ -23,7 +23,7 @@ restapi:
 
 # I use etcd3 version: https://www.percona.com/blog/upgrading-to-the-new-etcd-version-from-3-3-for-patroni/
 etcd3: 
-  hosts: 192.168.2.16:2379
+  hosts: 192.168.2.16:2379,192.168.2.17:2379,192.168.2.18:2379
 # in the boostrap block is what will be done when initializing patroni
 
 bootstrap:
@@ -90,7 +90,7 @@ postgresql:
     
     #-  hostssl    replication     all             192.168.2.0/24          scram-sha-256
     -  hostssl    replication     all             192.168.2.16/32         scram-sha-256
-    -  hostssl    replication     all             192.168.2.17/32         scram-sha-256
+    -  host       replication     all             192.168.2.17/32         scram-sha-256
     -  hostssl    replication     all             127.0.0.1/32            scram-sha-256 
     -  local      replication     all                                     trust
     #-  local      all             all                                     trust

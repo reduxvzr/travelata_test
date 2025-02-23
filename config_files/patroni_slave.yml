@@ -23,7 +23,7 @@ restapi:
 
 # I use etcd3 version: https://www.percona.com/blog/upgrading-to-the-new-etcd-version-from-3-3-for-patroni/
 etcd3: 
-  hosts: 192.168.2.16:2379
+  hosts: 192.168.2.16:2379,192.168.2.17:2379,192.168.2.18:2379
 # in the boostrap block is what will be done when initializing patroni
 
 bootstrap:
