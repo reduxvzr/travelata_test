@@ -1,7 +1,7 @@
 # path: /etc/default/etcd
 # config with global variables for etcd service
 # name for this member
-ETCD_NAME="masterpg"
+ETCD_NAME="etcdpg" 
 
 #ETCD_DATA_DIR="/var/lib/etcd/default.etcd" dir for data, i use default value 
 
@@ -10,7 +10,7 @@ ETCD_NAME="masterpg"
 ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379" 
 
 # how another nodes see this member, what ip address master advertise
-ETCD_ADVERTISE_CLIENT_URLS="http://192.168.2.16:2379" 
+ETCD_ADVERTISE_CLIENT_URLS="http://192.168.2.18:2379" 
 
 #ETCD_ADVERTISE_CLIENT_URLS="http://192.168.2.16:2379" ip address instead FQDN
 
@@ -19,13 +19,13 @@ ETCD_ADVERTISE_CLIENT_URLS="http://192.168.2.16:2379"
 ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380" 
 
 # how another nodes see this member, what ip address master advertise
-ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.2.16:2380" 
+ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.2.18:2380" 
 
-ETCD_INITIAL_CLUSTER="masterpg=http://192.168.2.16:2380,slavepg=http://192.168.2.17:2380"
+ETCD_INITIAL_CLUSTER="masterpg=http://192.168.2.16:2380,slavepg=http://192.168.2.17:2380,192.168.2.18:2380"
 
 ETCD_INITIAL_CLUSTER_STATE="new"
 
-ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"~
+ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
 
 #ETCD_AUTH_TOKEN="simple"
 

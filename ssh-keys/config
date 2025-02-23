@@ -15,10 +15,15 @@ Host slavedb
     User root
     Port 22
     IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key
-    
 
 Host vipdb
     Hostname db.test1.lan
+    User root
+    Port 22
+    IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key
+
+Host etcd
+    Host db.etcd.lan
     User root
     Port 22
     IdentityFile /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key

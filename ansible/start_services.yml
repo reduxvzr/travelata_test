@@ -9,14 +9,13 @@
         name: haproxy
         state: present
         update_cache: true
-        install_recommends: true
+        install_recommends: false
 
     - name: Check service status
       ansible.builtin.service:
         name: haproxy
         state: started
         enabled: true
-
 
 - name: Install PostgreSQL and check status
   hosts: database
@@ -79,7 +78,6 @@
         enabled: true
         state: restarted
 
-
 - name: Run keepalived services for MASTER Haproxy
   hosts: haproxy_vip
   become: true
@@ -118,7 +116,7 @@
         state: restarted
         enabled: true
 
-- name: Configure etcd on the MASTER database
+- name: Configure etcd on the MASTER database machine
   hosts: master
   become: true
   gather_facts: false
@@ -131,8 +129,142 @@
         group: root
         mode: '0644'
 
+    - name: Create data directory
+      ansible.builtin.file:
+        path: /var/lib/etcd
+        state: directory
+        mode: '0770'
+        owner: etcd
+        group: etcd
+
+    - name: Install etcd
+      ansible.builtin.apt:
+        pkg:
+          - etcd-client
+          - etcd-server
+          - etcd-discovery
+        state: present
+        update_cache: true
+
     - name: Restart etcd service
       ansible.builtin.service:
         name: etcd
         state: restarted
         enabled: true
+
+    # I had problems with the cluster because of the residual values in etcd. If the cluster is just being created after tests, then:
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      # register: etcdctl_output
+      # changed_when: etcdctl_output.rc != 0
+      changed_when: false
+
+- name: Configure etcd on the SLAVE database machine
+  hosts: slave
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy etcd file
+      ansible.builtin.copy:
+        src: ../config_files/etcd_slave
+        dest: /etc/default/etcd
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Install etcd
+      ansible.builtin.apt:
+        pkg:
+          - etcd-client
+          - etcd-server
+          - etcd-discovery
+        state: present
+        update_cache: true
+
+
+    - name: Restart etcd service
+      ansible.builtin.service:
+        name: etcd
+        state: restarted
+        enabled: true
+
+
+- name: Copy patroni config (MASTER)
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy the patroni configuration file to the MASTER
+      ansible.builtin.copy:
+        src: ../config_files/patroni_master.yml
+        dest: /etc/patroni/config.yml
+        owner: root
+        group: root
+        mode: '0775'
+
+- name: Copy patroni config (SLAVE)
+  hosts: slave
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy the patroni configuration file to the REPLICA
+      ansible.builtin.copy:
+        src: ../config_files/patroni_slave.yml
+        dest: /etc/patroni/config.yml
+        owner: root
+        group: root
+        mode: '0775'
+
+- name: Configure Patroni
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install patroni package
+      ansible.builtin.apt:
+        name: patroni
+        update_cache: true
+        state: present
+
+    - name: Create unnecessary directory for certs
+      ansible.builtin.file:
+        path: /var/lib/postgresql/15/ssl
+        state: directory
+        mode: '0770'
+        owner: postgres
+        group: postgres
+
+    # - name: Change owner of /var/
+
+    - name: Create data directory for database
+      ansible.builtin.file:
+        path: /var/lib/postgresql/15/data
+        state: directory
+        mode: '0750'
+        owner: postgres
+        group: postgres
+
+    - name: Copy certificates on the machines
+      ansible.builtin.copy:
+        src: ../certs/
+        dest: /var/lib/postgresql/15/ssl/
+        remote_src: false
+        owner: postgres
+        group: postgres
+        mode: '0600'
+        directory_mode: '0750'
+
+    - name: Start services
+      ansible.builtin.service:
+        name: patroni
+        enabled: true
+        state: restarted
+
+    - name: Get patronictl status
+      ansible.builtin.command: patronictl -c /etc/patroni/config.yml list
+      changed_when: false
+      register: out
+
+    - name: Print it
+      ansible.builtin.debug:
+        msg: "{{ out.stdout_lines }}"
