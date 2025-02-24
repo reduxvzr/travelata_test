@@ -406,7 +406,7 @@ http://192.168.2.18:2379 is healthy: successfully committed proposal: took = 4.9
 ```
 
 Список мемберов и статусы:
-![[Pasted image 20250223133513.png]]
+![Pasted image 20250223133513](https://github.com/user-attachments/assets/3c834766-df88-4671-9f1c-cbbdcf8640fc)
 
 Проверю работу утилитами, на всякий случай:
 ![alt text](<Pasted image 20250223131013.png>)
