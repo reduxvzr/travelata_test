@@ -1,2 +1,2 @@
 # travelata_test
-В /steps/steps.md описание выполнения задания.
+В /steps/Steps.md находится описание выполнения задания.
