@@ -661,6 +661,8 @@ drwxr-xr-x 3 root     root     4096 фев 21 13:20 ..
 
 192.168.2.17 отображается в роли реплики, как и положено.
 
+![Pasted image 20250224010007](https://github.com/user-attachments/assets/a65310a9-9985-439e-a03a-20a9d0343554)
+
 Все создается, а после реплицируется.
 
 ![alt text](<Pasted image 20250224010257.png>)
