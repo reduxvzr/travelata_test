@@ -1,9 +1,3 @@
-
-[1.IT] #Server #Project 
-
-[[PostgreSQL cluster]]
-[[PostgreSQL cluster 2]]
-
 --- 
 ## Задание
 
