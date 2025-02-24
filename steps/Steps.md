@@ -413,7 +413,8 @@ http://192.168.2.18:2379 is healthy: successfully committed proposal: took = 4.9
 > iftop, lsof -i
 
 Ноды между собой коммуницируют, проверить это можно при помощи **iftop**:
-![[Pasted image 20250223131013.png]]
+![Pasted image 20250223131013](https://github.com/user-attachments/assets/23666f30-a240-448f-8296-c87ac634fffd)
+
 
 И **lsof**:
 ```bash
