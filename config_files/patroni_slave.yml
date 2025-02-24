@@ -1,7 +1,8 @@
 scope: clusterdb
-namespace: /pgcluster/ 
+namespace: /pgcluster/
 # name of the node
 name: slavedb
+
 
 restapi:
   #  which address and port listen for restapi connection
