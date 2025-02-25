@@ -346,9 +346,9 @@ frontend stats
 
 Так выглядит статистика, если параметр `httpchk GET /primary` не активен.
 
-После некоторых правок балансинга, **Haproxy** сообщает, что **slave** не работает в бэкенде **balance**: 
+После некоторых правок балансинга, **Haproxy** сообщает, что **slave** не работает в бэкенде **pg_cluster**: 
 ![alt text](<Pasted image 20250223234256.png>)
-Это нормальная ситуация, так как теперь проверка происходит `httpchk`, который проверяет **/priority** у нод **patroni**. Сервер, который находится в статусе **лидера**, возвращает значение 200 - удачный get-запрос. Сервер в состоянии **реплики** отдает 503, что он не отвечает. Балансировка происходит по лидеру.
+Это нормальная ситуация, так как теперь проверка происходит по `httpchk`, что проверяет **/priority** у нод **patroni**. Сервер, который находится в статусе **лидера**, возвращает значение 200 - удачный get-запрос. Сервер в состоянии **реплики** отдает 503, что он не отвечает. Балансировка происходит по лидеру.
 
 ---
 ## 6. Patroni
@@ -356,7 +356,7 @@ frontend stats
 [Introduction — Patroni 4.0.4 documentation](https://patroni.readthedocs.io/en/latest/)
 [GitHub - etcd-io/etcd: Distributed reliable key-value store for the most critical data of a distributed system](https://github.com/etcd-io/etcd)
 
-**Patroni** - это шаблон для организации HA (High Availability) для Postgres, используя Python. Для максимальной доступности, Patroni поддерживает разнообразные конфигурации дистрибьюция, такие как ZooKeeper 
+**Patroni** - это шаблон для организации HA (High Availability) для Postgres, используя Python. Для максимальной доступности, Patroni поддерживает разнообразные конфигурации дистрибьюции, такие как ZooKeeper, etcd, Consul.
 
 ### 5.1. etcd 
 
