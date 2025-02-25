@@ -1,0 +1,196 @@
+2025-02-25 13:39:33,552 p=6909 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.etcd.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test1.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip_hap",
+            "etcd_cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "haproxy_vip",
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "etcd": {
+        "hosts": [
+            "db.etcd.lan"
+        ]
+    },
+    "etcd_cluster": {
+        "children": [
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy_vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip_hap": {
+        "children": [
+            "haproxy",
+            "haproxy_vip"
+        ]
+    }
+}
+2025-02-25 13:39:58,107 p=7098 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.etcd.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test1.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip_hap",
+            "etcd_cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "haproxy_vip",
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "etcd": {
+        "hosts": [
+            "db.etcd.lan"
+        ]
+    },
+    "etcd_cluster": {
+        "children": [
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy_vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip_hap": {
+        "children": [
+            "haproxy",
+            "haproxy_vip"
+        ]
+    }
+}
