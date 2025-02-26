@@ -668,6 +668,80 @@ drwxr-xr-x 3 root     root     4096 фев 21 13:20 ..
 Все создается, а после реплицируется.
 
 ![alt text](<Pasted image 20250224010257.png>)
+
+## 6. Организация файрвола
+
+Настроил файрвол посредством nftables, открыл все необходимые порты, для остальных сделал дроп пакетов. Также настроил мониторинг параметром `log prefix`, где описал как обозначать пакеты. которые ходят на определенный порт. 
+Конфигурационный файл для нод с Patroni выглядит таким образом:
+
+```bash
+#!/usr/sbin/nft -f
+
+flush ruleset
+
+table inet myfilter {
+        chain allfilter {
+                type filter hook input priority filter; policy drop;
+                tcp dport 22 log prefix "SSH traffic: " accept
+                iifname "lo" accept
+                udp dport 53 accept
+                tcp dport 53 accept
+                ct state established,related accept
+                tcp dport { 2379, 2380 } jump etcd
+                tcp dport 8888 jump patroni-rest
+                tcp dport 5050 log prefix "PostgreSQL: " accept 
+        }
+
+        chain etcd {
+                tcp dport 2379 log prefix "ETCD Traffic: " accept
+                tcp dport 2380 log prefix "ETCD Traffic: " accept
+        }
+
+        chain patroni-rest {
+                tcp dport 8888 log prefix "Rest-API Patroni: "  accept
+        }
+}
+```
+
+Подобно настроил и для нод **HAProxy**, где открыл порты для проксирования (5001, 5002, 5010) и порт для WEB GUI - 8404. 
+ 
+Теперь в журнале можно мониторить хождения пакетов, c чем нам помогает netfilter:
+
+![image](https://github.com/user-attachments/assets/96b0c5e5-1d28-402d-8a1f-96d277582e06)
+
+Порой это бывает очень удобно для отладки сетевых проблем.
+
+Заодно написал плейбук, который раскидывает файлы с конфигурацией nftables и перезапускает службу:
+
+```yaml
+- name: Setup firewall on the postgres machines
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure that nftables package is installed
+      ansible.builtin.apt:
+        name: nftables
+        state: present
+        update_cache: true
+
+    - name: Copy files to the machines
+      ansible.builtin.copy:
+        src: ../../config_files/firewall/psql_nftables.conf
+        dest: /etc/nftables.conf
+        mode: '0751'
+        owner: root
+        group: root
+
+    - name: Start and enable nftables service
+      ansible.builtin.service:
+        name: nftables
+        state: restarted
+        enabled: true
+```
+
+Подобно описал и для **HAProxy** нод.
+
 ## 6. Мысли по улучшению
 
 1. Создавать и раннить ВМ не только средствами самого **Proxmox**, что не совсем удобно и быстро, а используя более подходящие инструменты. Допустим, **Terraform**, и в качестве провайдера к нему тот же **Proxmox** или любой другой инструмент с гипервизором. Как альтернативу, еще можно использовать голый **Alpine** **Linux** или легковесный **Debian** в **Docker** (и уже все настроить там), после чего запустить.
