@@ -1,0 +1,50 @@
+---
+- name: Setup firewall on the postgres machines
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure that nftables package is installed
+      ansible.builtin.apt:
+        name: nftables
+        state: present
+        update_cache: true
+
+    - name: Copy files to the machines
+      ansible.builtin.copy:
+        src: ../../config_files/firewall/psql_nftables.conf
+        dest: /etc/nftables.conf
+        mode: '0751'
+        owner: root
+        group: root
+
+    - name: Start and enable nftables service
+      ansible.builtin.service:
+        name: nftables
+        state: restarted
+        enabled: true
+
+- name: Setup firewall on the haproxy machines
+  hosts: vip_hap
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure that nftables package is installed
+      ansible.builtin.apt:
+        name: nftables
+        state: present
+        update_cache: true
+
+    - name: Copy files to the machines
+      ansible.builtin.copy:
+        src: ../../config_files/firewall/haproxy_nftables.conf
+        dest: /etc/nftables.conf
+        mode: '0751'
+        owner: root
+        group: root
+
+    - name: Start and enable nftables service
+      ansible.builtin.service:
+        name: nftables
+        state: restarted
+        enabled: true

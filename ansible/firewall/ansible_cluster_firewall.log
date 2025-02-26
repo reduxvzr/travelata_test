@@ -194,3 +194,426 @@
         ]
     }
 }
+2025-02-26 10:31:07,515 p=1029 u=digitd n=ansible | [WARNING]: Unable to parse /home/digitd/git/travelata_test/ansible/firewall/cluster.ini as an inventory source
+
+2025-02-26 10:31:07,516 p=1029 u=digitd n=ansible | [WARNING]: No inventory was parsed, only implicit localhost is available
+
+2025-02-26 10:31:07,521 p=1029 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {}
+    },
+    "all": {
+        "children": [
+            "ungrouped"
+        ]
+    }
+}
+2025-02-26 10:31:24,007 p=1144 u=digitd n=ansible | {
+    "_meta": {
+        "hostvars": {
+            "db.etcd.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.master.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.slave.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            },
+            "db.test1.lan": {
+                "ansible_port": 22,
+                "ansible_python_interpreter": "auto_silent",
+                "ansible_ssh_private_key_file": "../ssh-keys/.keys/my_key",
+                "ansible_user": "root"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "ungrouped",
+            "cluster",
+            "database",
+            "vip_hap",
+            "etcd_cluster"
+        ]
+    },
+    "cluster": {
+        "children": [
+            "haproxy",
+            "haproxy_vip",
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "database": {
+        "children": [
+            "master",
+            "slave"
+        ]
+    },
+    "etcd": {
+        "hosts": [
+            "db.etcd.lan"
+        ]
+    },
+    "etcd_cluster": {
+        "children": [
+            "master",
+            "slave",
+            "etcd"
+        ]
+    },
+    "haproxy": {
+        "hosts": [
+            "db.test.lan"
+        ]
+    },
+    "haproxy_vip": {
+        "hosts": [
+            "db.test1.lan"
+        ]
+    },
+    "master": {
+        "hosts": [
+            "db.master.lan"
+        ]
+    },
+    "slave": {
+        "hosts": [
+            "db.slave.lan"
+        ]
+    },
+    "vip_hap": {
+        "children": [
+            "haproxy",
+            "haproxy_vip"
+        ]
+    }
+}
+2025-02-26 10:49:12,715 p=7520 u=digitd n=ansible | db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:49:12,725 p=7520 u=digitd n=ansible | db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:49:12,730 p=7520 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:49:12,742 p=7520 u=digitd n=ansible | db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:49:13,078 p=7520 u=digitd n=ansible | db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:53:44,591 p=8383 u=digitd n=ansible | db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:53:44,607 p=8383 u=digitd n=ansible | db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:53:44,607 p=8383 u=digitd n=ansible | db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:53:44,612 p=8383 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:53:44,613 p=8383 u=digitd n=ansible | db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 10:54:20,603 p=8714 u=digitd n=ansible | db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:20,603 p=8714 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:20,610 p=8714 u=digitd n=ansible | db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:20,610 p=8714 u=digitd n=ansible | db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:20,638 p=8714 u=digitd n=ansible | db.etcd.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:27,137 p=8824 u=digitd n=ansible | db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:27,140 p=8824 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:27,143 p=8824 u=digitd n=ansible | db.etcd.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:27,222 p=8824 u=digitd n=ansible | db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:27,222 p=8824 u=digitd n=ansible | db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 10:54:59,041 p=9182 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 10:54:59,056 p=9182 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 10:55:12,620 p=9182 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 10:55:19,472 p=9182 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 10:55:19,477 p=9182 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 10:55:21,166 p=9182 u=digitd n=ansible | changed: [db.slave.lan]
+2025-02-26 10:55:22,015 p=9182 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-26 10:55:22,032 p=9182 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 10:55:27,015 p=9182 u=digitd n=ansible | changed: [db.slave.lan]
+2025-02-26 10:55:29,607 p=9182 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-26 10:55:29,623 p=9182 u=digitd n=ansible | PLAY [Setup firewall on the haproxy machines] ************************************************************************************************************************************************************************
+2025-02-26 10:55:29,634 p=9182 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 10:55:29,874 p=9182 u=digitd n=ansible | fatal: [db.test.lan]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test.lan: Permission denied (publickey,password).", "unreachable": true}
+2025-02-26 10:55:29,894 p=9182 u=digitd n=ansible | fatal: [db.test1.lan]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test1.lan: Permission denied (publickey,password).", "unreachable": true}
+2025-02-26 10:55:29,895 p=9182 u=digitd n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************************************
+2025-02-26 10:55:29,896 p=9182 u=digitd n=ansible | db.master.lan              : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 10:55:29,896 p=9182 u=digitd n=ansible | db.slave.lan               : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 10:55:29,896 p=9182 u=digitd n=ansible | db.test.lan                : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 10:55:29,896 p=9182 u=digitd n=ansible | db.test1.lan               : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 10:56:26,964 p=9848 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 10:56:26,976 p=9848 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 10:56:27,269 p=9848 u=digitd n=ansible | fatal: [db.slave.lan]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).", "unreachable": true}
+2025-02-26 10:56:32,759 p=9848 u=digitd n=ansible |  [ERROR]: User interrupted execution
+
+2025-02-26 10:59:31,505 p=10806 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 10:59:31,519 p=10806 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 10:59:31,758 p=10806 u=digitd n=ansible | fatal: [db.slave.lan]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).", "unreachable": true}
+2025-02-26 10:59:31,935 p=10806 u=digitd n=ansible | fatal: [db.master.lan]: UNREACHABLE! => {"changed": false, "msg": "Failed to connect to the host via ssh: no such identity: ../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.master.lan: Permission denied (publickey,password).", "unreachable": true}
+2025-02-26 10:59:31,936 p=10806 u=digitd n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************************************
+2025-02-26 10:59:31,936 p=10806 u=digitd n=ansible | db.master.lan              : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 10:59:31,937 p=10806 u=digitd n=ansible | db.slave.lan               : ok=0    changed=0    unreachable=1    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:00:01,449 p=10988 u=digitd n=ansible | db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 11:00:01,458 p=10988 u=digitd n=ansible | db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 11:00:01,606 p=10988 u=digitd n=ansible | db.etcd.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 11:00:01,750 p=10988 u=digitd n=ansible | db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 11:00:01,959 p=10988 u=digitd n=ansible | db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-02-26 11:00:11,631 p=11132 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 11:00:11,649 p=11132 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:00:14,060 p=11132 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:00:18,244 p=11132 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:00:18,247 p=11132 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:00:19,342 p=11132 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:00:19,342 p=11132 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:00:19,345 p=11132 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:00:21,037 p=11132 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:00:21,077 p=11132 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:00:21,094 p=11132 u=digitd n=ansible | PLAY [Setup firewall on the haproxy machines] ************************************************************************************************************************************************************************
+2025-02-26 11:00:21,102 p=11132 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:00:38,660 p=11132 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-26 11:00:42,187 p=11132 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-26 11:00:42,190 p=11132 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:00:43,132 p=11132 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-26 11:00:43,160 p=11132 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-26 11:00:43,164 p=11132 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:00:44,370 p=11132 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-26 11:00:45,282 p=11132 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-26 11:00:45,294 p=11132 u=digitd n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************************************
+2025-02-26 11:00:45,294 p=11132 u=digitd n=ansible | db.master.lan              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:00:45,308 p=11132 u=digitd n=ansible | db.slave.lan               : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:00:45,309 p=11132 u=digitd n=ansible | db.test.lan                : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:00:45,309 p=11132 u=digitd n=ansible | db.test1.lan               : ok=3    changed=2    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:02:16,747 p=11880 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 11:02:16,763 p=11880 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:02:18,876 p=11880 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:02:19,004 p=11880 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:02:19,007 p=11880 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:02:19,977 p=11880 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:02:19,979 p=11880 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:02:19,981 p=11880 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:02:21,613 p=11880 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:02:21,627 p=11880 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:02:21,651 p=11880 u=digitd n=ansible | PLAY [Setup firewall on the haproxy machines] ************************************************************************************************************************************************************************
+2025-02-26 11:02:21,695 p=11880 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:02:23,834 p=11880 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-26 11:02:23,842 p=11880 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-26 11:02:23,845 p=11880 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:02:24,778 p=11880 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-26 11:02:24,778 p=11880 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-26 11:02:24,781 p=11880 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:02:25,852 p=11880 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-26 11:02:25,862 p=11880 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-26 11:02:25,876 p=11880 u=digitd n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************************************
+2025-02-26 11:02:25,876 p=11880 u=digitd n=ansible | db.master.lan              : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:02:25,876 p=11880 u=digitd n=ansible | db.slave.lan               : ok=3    changed=0    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:02:25,876 p=11880 u=digitd n=ansible | db.test.lan                : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:02:25,876 p=11880 u=digitd n=ansible | db.test1.lan               : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:05:27,839 p=13180 u=digitd n=ansible | PLAY [Setup firewall on the postgres machines] ***********************************************************************************************************************************************************************
+2025-02-26 11:05:27,852 p=13180 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:05:29,988 p=13180 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:05:30,102 p=13180 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:05:30,104 p=13180 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:05:31,069 p=13180 u=digitd n=ansible | ok: [db.slave.lan]
+2025-02-26 11:05:31,111 p=13180 u=digitd n=ansible | ok: [db.master.lan]
+2025-02-26 11:05:31,114 p=13180 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:05:33,031 p=13180 u=digitd n=ansible | changed: [db.slave.lan]
+2025-02-26 11:05:33,072 p=13180 u=digitd n=ansible | changed: [db.master.lan]
+2025-02-26 11:05:33,085 p=13180 u=digitd n=ansible | PLAY [Setup firewall on the haproxy machines] ************************************************************************************************************************************************************************
+2025-02-26 11:05:33,094 p=13180 u=digitd n=ansible | TASK [Ensure that nftables package is installed] *********************************************************************************************************************************************************************
+2025-02-26 11:05:34,902 p=13180 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-26 11:05:35,077 p=13180 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-26 11:05:35,080 p=13180 u=digitd n=ansible | TASK [Copy files to the machines] ************************************************************************************************************************************************************************************
+2025-02-26 11:05:35,770 p=13180 u=digitd n=ansible | ok: [db.test.lan]
+2025-02-26 11:05:35,783 p=13180 u=digitd n=ansible | ok: [db.test1.lan]
+2025-02-26 11:05:35,786 p=13180 u=digitd n=ansible | TASK [Start and enable nftables service] *****************************************************************************************************************************************************************************
+2025-02-26 11:05:36,969 p=13180 u=digitd n=ansible | changed: [db.test1.lan]
+2025-02-26 11:05:37,011 p=13180 u=digitd n=ansible | changed: [db.test.lan]
+2025-02-26 11:05:37,022 p=13180 u=digitd n=ansible | PLAY RECAP ***********************************************************************************************************************************************************************************************************
+2025-02-26 11:05:37,022 p=13180 u=digitd n=ansible | db.master.lan              : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:05:37,022 p=13180 u=digitd n=ansible | db.slave.lan               : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:05:37,022 p=13180 u=digitd n=ansible | db.test.lan                : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:05:37,022 p=13180 u=digitd n=ansible | db.test1.lan               : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-02-26 11:48:26,253 p=24527 u=digitd n=ansible | db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:26,266 p=24527 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:26,270 p=24527 u=digitd n=ansible | db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:26,285 p=24527 u=digitd n=ansible | db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:26,288 p=24527 u=digitd n=ansible | db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:33,576 p=24610 u=digitd n=ansible | db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:33,588 p=24610 u=digitd n=ansible | db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:33,593 p=24610 u=digitd n=ansible | db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:33,599 p=24610 u=digitd n=ansible | db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-02-26 11:48:33,602 p=24610 u=digitd n=ansible | db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\n@         WARNING: UNPROTECTED PRIVATE KEY FILE!          @\r\n@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@\r\nPermissions 0644 for '../../ssh-keys/.keys/my_key' are too open.\r\nIt is required that your private key files are NOT accessible by others.\r\nThis private key will be ignored.\r\nLoad key \"../../ssh-keys/.keys/my_key\": bad permissions\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
