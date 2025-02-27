@@ -74,6 +74,10 @@ postgresql:
       ssl_key_file: /var/lib/postgresql/15/ssl/cluster.key
       max_connections: 50
       #use_pg_rewind: true
+      archive__command: pgbackrest --stanza=testcluster1 archive-push "%p"
+      archive_mode: on
+      max_wal_senders: 3
+      
     authentication:
       superuser:
         username: postgres
