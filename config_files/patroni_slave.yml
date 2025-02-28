@@ -74,6 +74,8 @@ postgresql:
       ssl_cert_file: /var/lib/postgresql/15/ssl/cluster.crt
       ssl_key_file: /var/lib/postgresql/15/ssl/cluster.key
       max_connections: 50
+      archive_command: '/usr/bin/pgbackrest --stanza=testcluster archive-push %p'
+      archive_mode: on
       #use_pg_rewind: true
     authentication:
       superuser:
@@ -94,9 +96,8 @@ postgresql:
     -  hostssl    replication     all             192.168.2.17/32         scram-sha-256
     -  hostssl    replication     all             127.0.0.1/32            scram-sha-256 
     -  local      replication     all                                     trust
-    #-  local      all             all                                     trust
-    #-  local      all             all                                     peer  
-    -  local      all             all                                     scram-sha-256
+    -  local      all             all                                     peer  
+    #-  local      all             all                                     scram-sha-256
     #   use_unix_socket: true
     #   pgpass: /tmp/pgpass
 

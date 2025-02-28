@@ -1,0 +1,118 @@
+---
+
+- name: Create directory for storing backups
+  hosts: etcd
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Create and setup rights
+      ansible.builtin.file:
+        path: /mnt/pgbackrest_backups
+        state: directory
+        owner: postgres
+        group: postgres
+        mode: '0764'
+
+    - name: Create .ssh directory and authorized_keys file
+      ansible.builtin.file:
+        path: "{{ item.path }}"
+        state: "{{ item.state }}"
+        owner: postgres
+        group: postgres
+        mode: "{{ item.mode }}"
+      loop:
+        - { path: "/var/lib/postgresql/15/data/.ssh", state: "directory", mode: "0700" }
+        - { path: "/var/lib/postgresql/15/data/.ssh/authorized_keys", state: "touch", mode: "0600" }
+
+- name: Setup pgbackrest (postgres backup tool) on the patroni nodes
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure that pgbackrest package is installed
+      ansible.builtin.apt:
+        name: pgbackrest
+        state: present
+        update_cache: true
+
+    - name: Copy files to the machines
+      ansible.builtin.copy:
+        src: ../../config_files/backup_configuration/pgbackrest.conf
+        dest: /etc/pgbackrest.conf
+        mode: '0640'
+        owner: postgres
+        group: postgres
+
+    # Easiest way to create path for storing scanned hash
+    # - name: Generate keys
+    #   ansible.builtin.command: sudo -u postgres ssh-keygen -t ed25519 -q -f "/var/lib/postgresql/.ssh/id_ed25519" -N ""
+    #   changed_when: true
+
+    - name: Scan sha1-hash
+      ansible.builtin.command: sudo -u postgres ssh-keyscan -H db.etcd.lan >> /var/lib/postgresql/.ssh/known_hosts
+      changed_when: true
+
+    # - name: Start and enable pgbackrest service
+    #   ansible.builtin.service:
+    #     name: pgbackrest
+    #     state: restarted
+    #     enabled: true
+
+- name: Start backuping
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Ensure that patroni is running
+      ansible.builtin.service:
+        name: patroni
+        state: started
+        enabled: true
+
+    - name: Create stanza
+      ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info stanza-create
+      changed_when: true
+
+    - name: Check
+      ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info check
+      changed_when: true
+
+    - name: Perform first backup of DB
+      ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info backup
+      changed_when: true
+
+    - name: Show info about backups
+      ansible.builtin.command: sudo -u postgres pgbackrest info
+      changed_when: true
+      register: pgbackrest
+
+    - name: Print it
+      ansible.builtin.debug:
+        msg: "{{ pgbackrest.stdout_lines }}"
+
+    - name: Create cron job for full backup
+      ansible.builtin.cron:
+        name: full backup
+        weekday: "0"
+        minute: "0"
+        hour: "18"
+        user: postgres
+        job: "pgbackrest --stanza=testcluster --log-level-console=info backup"
+
+    - name: Create cron job for diff backup
+      ansible.builtin.cron:
+        name: diff backup
+        weekday: "4"
+        minute: "0"
+        hour: "18"
+        user: postgres
+        job: "pgbackrest --stanza=testcluster --log-level-console=info type=diff backup"
+
+    - name: Create cron job for incr backup
+      ansible.builtin.cron:
+        name: incr backup
+        weekday: "4"
+        minute: "0"
+        hour: "18"
+        user: postgres
+        job: "pgbackrest --stanza=testcluster --log-level-console=info type=incr backup"
