@@ -40,19 +40,6 @@ bootstrap:
     # if problems with encoding appears, change value to cp1251    РІ psql \\! chcp 1251
     - encoding: UTF8
     - data-checksums
-  
-  #user creation
-  users:
-    cluster:
-      password: '12345678'
-      options:
-        - createrole
-        - createdb
-
-    replicator:
-      password: '65673608'
-      options:
-        - replication
       
 # parameters for futures creations of databases 
 postgresql:
@@ -84,7 +71,7 @@ postgresql:
       
       replication:
         username: replicator
-        password: your_replication_password
+        password: '1234567'
 
     pg_hba:
     # IPv4 local connections:

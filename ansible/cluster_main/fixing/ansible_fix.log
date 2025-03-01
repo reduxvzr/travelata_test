@@ -1,0 +1,108 @@
+2025-03-01 22:22:42,787 p=391300 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:22:42,797 p=391300 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:22:42,824 p=391300 u=digitd n=ansible INFO| db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:22:42,982 p=391300 u=digitd n=ansible INFO| db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:22:43,032 p=391300 u=digitd n=ansible INFO| db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nno such identity: /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:15,635 p=392380 u=digitd n=ansible INFO| db.master.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.master.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:15,640 p=392380 u=digitd n=ansible INFO| db.slave.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.slave.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:15,713 p=392380 u=digitd n=ansible INFO| db.test.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:15,738 p=392380 u=digitd n=ansible INFO| db.test1.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.test1.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:15,780 p=392380 u=digitd n=ansible INFO| db.etcd.lan | UNREACHABLE! => {
+    "changed": false,
+    "msg": "Failed to connect to the host via ssh: no such identity: ../../ssh-keys/.keys/my_key: No such file or directory\r\nno such identity: /run/media/digitd/NFS/git/travelata/travelata_test/ssh-keys/.keys/my_key: No such file or directory\r\nroot@db.etcd.lan: Permission denied (publickey,password).",
+    "unreachable": true
+}
+2025-03-01 22:23:38,184 p=393044 u=digitd n=ansible INFO| db.etcd.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-03-01 22:23:38,197 p=393044 u=digitd n=ansible INFO| db.slave.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-03-01 22:23:38,226 p=393044 u=digitd n=ansible INFO| db.master.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-03-01 22:23:38,318 p=393044 u=digitd n=ansible INFO| db.test1.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-03-01 22:23:38,328 p=393044 u=digitd n=ansible INFO| db.test.lan | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3.11"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+2025-03-01 22:24:07,952 p=394043 u=digitd n=ansible INFO| PLAY [Create user \cluster\ and new database \testdb\] *******************************************************************************************************************************************************************************************
+2025-03-01 22:24:07,956 p=394043 u=digitd n=ansible INFO| TASK [User creation] *****************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:09,856 p=394043 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 22:24:09,858 p=394043 u=digitd n=ansible INFO| TASK [Debug] *************************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:10,400 p=394043 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": []
+}
+2025-03-01 22:24:10,459 p=394043 u=digitd n=ansible INFO| TASK [Change password] ***************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:11,031 p=394043 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 22:24:11,032 p=394043 u=digitd n=ansible INFO| TASK [Debug] *************************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:11,075 p=394043 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": [
+        "ALTER ROLE"
+    ]
+}
+2025-03-01 22:24:11,159 p=394043 u=digitd n=ansible INFO| TASK [Create database] ***************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:12,764 p=394043 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 22:24:12,765 p=394043 u=digitd n=ansible INFO| TASK [Debug] *************************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:12,843 p=394043 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": []
+}
+2025-03-01 22:24:12,959 p=394043 u=digitd n=ansible INFO| PLAY RECAP ***************************************************************************************************************************************************************************************************************************************
+2025-03-01 22:24:13,367 p=394043 u=digitd n=ansible INFO| db.master.lan              : ok=6    changed=3    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   

@@ -1,0 +1,103 @@
+# If patroni cluster started with errors:
+- name: Stop Patroni
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Stop service
+      ansible.builtin.service:
+        name: patroni
+        state: stopped
+
+- name: Clear values from WAL
+  hosts: etcd_cluster
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      changed_when: true
+      ignore_errors: true
+
+    - name: Stop etcd service
+      ansible.builtin.service:
+        name: etcd
+        state: stopped
+
+    - name: Delete etcd files
+      ansible.builtin.file:
+        path: /var/lib/etcd
+        state: absent
+
+    - name: Create data directory
+      ansible.builtin.file:
+        path: /var/lib/etcd
+        state: directory
+        force: true
+        mode: '0770'
+        owner: etcd
+        group: etcd
+
+    - name: Replace value of variable ETCD_INITIAL_CLUSTER_STATE on 'new'
+      ansible.builtin.replace:
+        path: /etc/default/etcd
+        regexp: '^ETCD_INITIAL_CLUSTER_STATE=".*"$'
+        replace: 'ETCD_INITIAL_CLUSTER_STATE="new"'
+
+    - name: Start etcd service
+      ansible.builtin.service:
+        name: etcd
+        state: started
+
+    - name: Change value of variable ETCD_INITIAL_CLUSTER_STATE on old 'existing'
+      ansible.builtin.replace:
+        path: /etc/default/etcd
+        regexp: '^ETCD_INITIAL_CLUSTER_STATE=".*"$'
+        replace: 'ETCD_INITIAL_CLUSTER_STATE="existing"'
+
+    - name: Clear old values of the cluster in base
+      ansible.builtin.command: etcdctl del "" --prefix
+      changed_when: true
+      ignore_errors: true
+
+- name: Delete Patroni files
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Remove files
+      ansible.builtin.command: trash-put /var/lib/postgresql/15/data
+      changed_when: true
+
+- name: Start Patroni
+  hosts: database
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Start service
+      ansible.builtin.service:
+        name: patroni
+        state: started
+
+    - name: Get patronictl status
+      ansible.builtin.command: patronictl -c /etc/patroni/config.yml list
+      changed_when: false
+      register: out
+
+    - name: Get time for Pantroni initializing
+      ansible.builtin.pause:
+        minutes: 2
+
+    - name: Print it
+      ansible.builtin.debug:
+        msg: "{{ out.stdout_lines }}"
+
+- name: Restart haproxy
+  hosts: vip_hap
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Restart service
+      ansible.builtin.service:
+        name: haproxy
+        state: restarted

@@ -1,0 +1,31 @@
+- name: Create user \cluster\ and new database \testdb\
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: User creation
+      ansible.builtin.command: sudo -u postgres createuser cluster --createdb --createrole --superuser --port=5050
+      changed_when: true
+      register: createuser
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ createuser.stdout_lines }}"
+
+    - name: Change password
+      ansible.builtin.command: sudo -u postgres psql --port=5050 --username=postgres -c "alter user cluster with password '12345678';"
+      changed_when: true
+      register: changepass
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ changepass.stdout_lines }}"
+
+    - name: Create database
+      ansible.builtin.command: sudo -u postgres createdb testdb --port=5050
+      changed_when: true
+      register: dbcreation
+
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "{{ dbcreation.stdout_lines }}"
