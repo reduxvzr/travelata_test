@@ -560,13 +560,14 @@ patronictl -c /etc/patroni/config.yml list
 
 Перезапустил поочередно службы, почистил значения **WAL** у **etcd**. И получил рабочий кластер **Patroni**:
 
-![alt text](<Pasted image 20250223193840.png>)
+![Pasted image 20250223193840](https://github.com/user-attachments/assets/34520484-c941-4b0c-9f4c-48f0da4fc3a2)
 
 ### 5.3. Демонстрация работы и тестирование
 
 Рабочая конфигурация:
 
-![alt text](<Pasted image 20250223193840.png>)
+![Pasted image 20250223193840](https://github.com/user-attachments/assets/87e0a153-fcce-405d-a6ac-66239c8c45c7)
+
 
 Узнаем кто лидер, и по какому порту работает **postgres**.
 ```bash
@@ -576,17 +577,18 @@ host=192.168.2.16 port=5050
 
 Просмотр работы кластера:
 
-![alt text](<Pasted image 20250223194730.png>)
+![Pasted image 20250223194730](https://github.com/user-attachments/assets/e356d337-ba86-4c75-9cec-99fed7b5700f)
 
 Смена лидера на реплику:
 
-![alt text](<Pasted image 20250223195521.png>)
+![Pasted image 20250223195521](https://github.com/user-attachments/assets/1f80b132-5b70-4624-8068-4c281d523b3f)
+
 
 Делается это при помощи параметра **failover**.
 
 Подсоединение происходит, 5010 - это порт балансировки, **db.vip.lan** - адрес **VRRP**, **cluster** - пользователь, которого создал сценарий **Patroni**. Шифрование тоже подхватывается.
 
-![alt text](<Pasted image 20250223215859.png>)
+![Pasted image 20250223215859](https://github.com/user-attachments/assets/bc8b985d-a3fd-45f3-b342-1e68ccaa42b4)
 
 ### 5.4. Возникшие проблемы
 
@@ -596,7 +598,7 @@ host=192.168.2.16 port=5050
 
 Как оказалось, нужно всегда вычищать содержимое **/var/lib/etcd** или другой рабочей директории для **etcd**, после чего удалять все данные ключ-значение из базы: `etcdctl del "" --prefix`. Только после таких манипуляций у меня все заработало.
 
-![alt text](<Pasted image 20250222135843.png>)
+![Pasted image 20250222135843](https://github.com/user-attachments/assets/7400bcdf-c57f-4823-b5a8-e20e4fdec042)
 
 Долго не мог разрешить проблему, возникала ошибка такого характера:
 ```bash
@@ -661,7 +663,7 @@ drwxr-xr-x 3 root     root     4096 фев 21 13:20 ..
 
 Запустил PgAdmin через docker на ноде db.etcd.lan. Теперь можно попробовать осуществить коннект к БД.
 
-![alt text](<Pasted image 20250224003600.png>)
+![Pasted image 20250224003600](https://github.com/user-attachments/assets/8ca093e5-f9d8-464c-a605-0fb01c107f53)
 
 192.168.2.17 отображается в роли реплики, как и положено.
 
@@ -669,7 +671,7 @@ drwxr-xr-x 3 root     root     4096 фев 21 13:20 ..
 
 Все создается, а после реплицируется.
 
-![alt text](<Pasted image 20250224010257.png>)
+![Pasted image 20250224010257](https://github.com/user-attachments/assets/56882146-2651-4c77-9179-5baac5fb45fd)
 
 ## 6. Организация файрвола
 
