@@ -103,7 +103,8 @@ cat /etc/hosts
 
 Результат следующий:
 
-![alt text](<Pasted image 20250218203757.png>)
+![Pasted image 20250218203757](https://github.com/user-attachments/assets/143ceeb1-277b-4527-bda8-8f62b851dfef)
+
 
 --- 
 ## 2. Формирование инвентаря Ansible
@@ -196,7 +197,7 @@ log_path = ./ansible_cluster.log
 
 Ответ от нод пришел
 
-![alt text](<Pasted image 20250218211124.png>)
+![Pasted image 20250218211124](https://github.com/user-attachments/assets/83db0cde-3a1c-4afa-a869-bdf9ddffb4c1)
 --- 
 
 ## 3. Плейбуки Ansible и тестирование postgresql
@@ -245,8 +246,8 @@ log_path = ./ansible_cluster.log
 ```
 
 Меняю порт на 5001 в файле postgresql.conf:
+![Pasted image 20250218223251](https://github.com/user-attachments/assets/0a5dcb6d-9529-453e-a4fc-4c783ce9e5ad)
 
-![alt text](<Pasted image 20250218223251.png>)
 
 Захожу в базы данных и устанавливаю пароль для пользователя (в противном случае, подсоединение не сработает):
 ```sql
@@ -255,7 +256,7 @@ alter user master with password '12345678';
 
 Подсоединение на мастер-ноду сработало.
 
-![alt text](<Pasted image 20250218224918.png>)
+![Pasted image 20250218224918](https://github.com/user-attachments/assets/3dc557ff-c953-4960-99fc-39df8064ad6d)
 
 --- 
 ## 4. Keepalived
@@ -270,11 +271,11 @@ alter user master with password '12345678';
 
 Для этого склонируем виртуальную машину, на которой функционирует прокси. Сделаем минорные правки на ней, а именно изменим hostname, ip-адреса, домашнего пользователя и его родную директорию.
 
-![alt text](<Pasted image 20250219101404.png>)
+![Pasted image 20250219101404](https://github.com/user-attachments/assets/2f56fa79-eb3c-4373-a368-667f805eb227)
 
 Пока все ходит.
 
-![alt text](<Pasted image 20250219110124.png>)
+![Pasted image 20250219110124](https://github.com/user-attachments/assets/59511662-220b-417f-9199-ba5ff6fe91ea)
 
 Теперь переходим к настройки **keepalived**
 
@@ -300,22 +301,22 @@ vrrp_instance VI_1 {
 ```
 
 
-![alt text](<Pasted image 20250219121207.png>)
+![Pasted image 20250219121207](https://github.com/user-attachments/assets/1e663cdf-6c0f-4ddb-828f-a13072863742)
 
 После данных манипуляций, я могу подсоединяться к БД на db.master.lan, обращаясь к VIP, который может обращаться к нескольким нодам HAProxy.
 
-![alt text](<Pasted image 20250219122217-1.png>)
+![Pasted image 20250301170455](https://github.com/user-attachments/assets/5c1123c6-8667-4320-aa9b-e1740de67eaa)
 
 Для **VRRP** (протокол для **VIP**) появился новый интерфейс 192.168.2.100
 
-![alt text](<Pasted image 20250219140900.png>)
+![Pasted image 20250219140900](https://github.com/user-attachments/assets/19df90dd-d7de-4ee3-b600-a7d7860fe058)
 
 Проверка работоспособности после исполнения плейбука.
 
-![alt text](<Pasted image 20250219151215.png>)
+![Pasted image 20250219151215](https://github.com/user-attachments/assets/b669aed5-b9d9-4d30-9ca3-27d1452c0a4f)
 
 ## 5. Haproxy
-[Title Unavailable \| Site Unreachable](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/service-reliability/health-checks/)
+[Haproxy Health Checks](https://www.haproxy.com/documentation/haproxy-configuration-tutorials/service-reliability/health-checks/)
 
 Для начала настроим **Haproxy**, чтобы он отдавал страницу со статистикой. Делается это достаточно просто, если следовать документации:
 ```nginx
@@ -328,7 +329,8 @@ frontend stats
     stats admin if LOCALHOST
 ```
 Изначально есть встроенный функционал, бэкенд настраивать не нужно, все работает и так. Выглядит страница так:
-![alt text](<Pasted image 20250219152544.png>)
+
+![Pasted image 20250219152544](https://github.com/user-attachments/assets/01d8cfd8-7377-4782-bc76-5b18c2a4ee69)
 
 Настраиваю **Haproxy** по следующему принципу:
 - Порт `5001` проксирует на **Мастер** ноду кластера **Patroni**.
@@ -342,12 +344,12 @@ frontend stats
 
 
 Работа **Haproxy**:
-![alt text](<Pasted image 20250223195750.png>)
+![Pasted image 20250223195750](https://github.com/user-attachments/assets/71e59259-b4a5-458e-bea8-ac9700e05335)
 
 Так выглядит статистика, если параметр `httpchk GET /primary` не активен.
 
 После некоторых правок балансинга, **Haproxy** сообщает, что **slave** не работает в бэкенде **pg_cluster**: 
-![alt text](<Pasted image 20250223234256.png>)
+![Pasted image 20250223234256](https://github.com/user-attachments/assets/ab44ca4b-8500-4102-adff-ab3cf33445c2)
 Это нормальная ситуация, так как теперь проверка происходит по `httpchk`, что проверяет **/priority** у нод **patroni**. Сервер, который находится в статусе **лидера**, возвращает значение 200 - удачный get-запрос. Сервер в состоянии **реплики** отдает 503, что он не отвечает. Балансировка происходит по лидеру.
 
 ---
@@ -411,7 +413,7 @@ http://192.168.2.18:2379 is healthy: successfully committed proposal: took = 4.9
 ![Pasted image 20250223133513](https://github.com/user-attachments/assets/3c834766-df88-4671-9f1c-cbbdcf8640fc)
 
 Проверю работу утилитами, на всякий случай:
-![alt text](<Pasted image 20250223131013.png>)
+![Pasted image 20250223131013](https://github.com/user-attachments/assets/b2e0bb4b-7018-4c0a-88a9-c67e02193ae4)
 > iftop, lsof -i
 
 Ноды между собой коммуницируют, проверить это можно при помощи **iftop**:
@@ -742,10 +744,221 @@ table inet myfilter {
 
 Подобно описал и для **HAProxy** нод.
 
-## 7. Мысли по улучшению
+## 7. Организация автоматического бэкапирования
+
+### 7.1. Бэкапы БД PostgreSQL
+
+Для отказоустойчивости и сохранности данных в БД важно всегда иметь копии данных. Еще лучше будет настроить осуществление копирования автоматически на другую ноду. В качестве инструментов для  организации бэкапирования я выбрал **pgBackRest** для данных **PostgresSQL** и **Restic** для копирования содержания всей корневой файловой системы **db.master.lan**. 
+
+Заодно **Restic** будет работать и на **db.test.lan**, копируя все содержимое корневой файловой системы. Таким образом, будет осуществляться сохранность ФС нод **Haproxy** и Мастер-ноды кластера **Patroni**.
+
+Хранение бэкапов будет осуществляться на ноде **db.etcd.lan**, создам директорию для хранения бэкапов **PostgreSQL**:
+```bash
+mkdir /mnt/pgbackrest_backups
+chown postgres:postgres -R /mnt/pgbackrest_backups
+```
+
+Так же важно подправить конфигурацию **Patroni**, добавив в качестве бэкапера **pgBackRest**. 
+```bash
+postgresql:
+	parameters:
+		archive__command: pgbackrest --stanza=testcluster1 archive-push "%p"
+		archive_mode: on
+		max_wal_senders: 3
+```
+
+Устанавливаю:
+```bash
+apt install pgbackrest
+```
+
+Конфигурация **pgBackRest** будет находиться на **Мастер** ноде:
+```bash
+# my stanza:
+[testcluster]
+testcluster1-path=/var/lib/postgresql/15/data
+
+[global]
+repo1-path=/mnt/pgbackrest_backups
+repo1-sftp-host=db.etcd.lan
+repo1-sftp-host-user=postgres
+repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_rsa
+repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_rsa.pub
+repo1-type=sftp
+repo1-retention-full=2
+repo1-retention-diff=2
+repo1-cipher-pass=gOBeYCo1abkbbxMZAaOIrN3u1flD446W7T+Im+tzYwLq0QYurVAUBF9huKXpiYsP
+repo1-cipher-type=aes-256-cbc
+
+start-fast=y
+```
+
+После того, как я инициализировал репозиторий (stanza), то осуществил бэкап:
+```bash
+sudo -u postgres pgbackrest --stanza=testluster --log-level-console=info backup
+```
+
+После бэкапа проверяем состояние:
+```bash
+pgbackrest info
+
+stanza: testcluster
+    status: ok
+    cipher: aes-256-cbc
+
+    db (current)
+        wal archive min/max (15): 000000010000000000000001/0000000B000000000000000F
+
+        full backup: 20250228-094415F
+            timestamp start/stop: 2025-02-28 09:44:15+03 / 2025-02-28 09:44:34+03
+            wal start/stop: 0000000B000000000000000F / 0000000B000000000000000F
+            database size: 29.3MB, database backup size: 29.3MB
+            repo1: backup set size: 3.9MB, backup size: 3.9MB
+```
+
+Теперь добавим в **cron** команды, которые будут исполняться следующим образом:
+```bash
+30 18 * * 0    pggackrest --type=full --stanza=testcluster backup
+30 18 * * 1-6  pgbackrest --type=diff --stanza=testcluster backup
+30 09 * * 1-6  pbbackrest --type=incr --stanza=testcluster backup
+```
+Теперь по воскресенья будет делаться полный бэкап, с понедельника по субботу дифференциальный и инкрементальный бэкапы.
+
+Останавливаем кластер **Patroni** и пробуем осуществить восстановление данных:
+```bash
+sudo -u postgres pgbackrest --delta --stanza=testcluster --log-level-console=info restore
+2025-02-28 10:08:07.740 P00   INFO: restore command begin 2.54.2: --delta --exec-id=460584-e4890abf --log-level-console=info --pg1-path=/var/lib/postgresql/15/data --process-max=4 --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/mnt/pgbackrest_backups --repo1-sftp-host=db.etcd.lan --repo1-sftp-host-key-hash-type=sha1 --repo1-sftp-host-user=postgres --repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_ed25519 --repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_ed25519.pub --repo1-type=sftp --stanza=testcluster
+2025-02-28 10:08:08.046 P00   INFO: repo1: restore backup set 20250228-094415F, recovery will start at 2025-02-28 09:44:15
+2025-02-28 10:08:08.128 P00   INFO: remove invalid files/links/paths from '/var/lib/postgresql/15/data'
+2025-02-28 10:08:09.110 P00   INFO: write updated /var/lib/postgresql/15/data/postgresql.auto.conf
+2025-02-28 10:08:09.770 P00   INFO: restore global/pg_control (performed last to ensure aborted restores cannot be started)
+2025-02-28 10:08:09.862 P00   INFO: restore size = 29.3MB, file total = 1273
+```
+
+Все прошло удачно, теперь бэкапы БД будут происходить автоматически, записываться они будут на `db.etcd.lan`. 
+
+После написал плейбук, который настраивает и запускает **pgBackRest**. При помощи него происходит инициализация репозитория, создание `stanza`, после чего запускается создание бэкапа. Результат следующий:
+
+![Pasted image 20250301124809](https://github.com/user-attachments/assets/25ddd06e-f3b3-4b28-9b79-311d566aa40a)
+
+Как видно по скриншоту, создаются, в том числе и джобы **cron**.
+
+### 7.2. Бэкап всей корневой файловой системы
+
+Помимо того, что можно делать снэпшоты виртуальных машин, посредством, например, **Proxmox** или **VMware ESXi**, что уже обеспечивает неплохой уровень сохранности данных, особенно если снимок хранится на другом диске, почти всегда используют множество дисков, которые объединены в Raid-массивы, **RAID 5** или **RAIDZ**. Пока жестких диска у меня два, поэтому формирование пятого рэйда невозможно, а первого нецелесообразно, так как много места уходит на зеркалирование.
+
+Решением является снимок всей ФС такими инструментами, как **Restic** или **rsync**. Далее я буду использовать связку **Restic** и **Rclone**, чтобы делать снэпшот мастер-ноды **Patroni** и хранить его на `db.etcd.lan`.
+
+
+Устанавливаю: `apt install -y restic rclone`
+
+Так же огромным плюсом и удобством такого подхода является возможность восстановить единичные файлы из репозитория **Restic**. Если, по ошибке, был удален важный конфигурационный файл или он затерся при обновлении софта, то восстановить его будет достаточно легко.
+
+Создадим конфиг, к которому обращается **rclone**:
+```bash
+mkdir /root/.config/rclone/ && touch /root/.config/rclone/rclone.conf
+```
+Для начала настроим rclone для передачи данных по **sftp**:
+
+```bash
+[etcd-serv]
+type = sftp
+host = db.etcd.lan
+user = root
+port = 22
+key_file = /var/lib/postgresql/.ssh/id_ed25519
+key_use_agent = false
+shell_type = unix
+md5sum_command = md5sum
+sha1sum_command = sha1sum
+```
+
+Проверяем:
+```bash
+root@dbmaster:~/.config/rclone# rclone lsd etcd-serv:/ 
+          -1 2025-02-28 09:46:13        -1 bin
+          -1 2025-02-18 15:39:42        -1 boot
+          -1 2025-02-25 21:50:11        -1 dev
+          -1 2025-02-26 14:19:29        -1 etc
+          -1 2025-02-24 00:20:45        -1 home
+          -1 2025-02-24 00:23:31        -1 lib
+          -1 2025-02-18 14:22:08        -1 lib64
+          -1 2025-02-18 14:21:23        -1 lost+found
+          -1 2025-02-18 14:21:23        -1 media
+          -1 2025-02-27 16:41:35        -1 mnt
+          -1 2025-02-24 00:23:45        -1 opt
+          -1 2025-02-25 21:50:00        -1 proc
+          -1 2025-03-01 13:23:22        -1 root
+          -1 2025-03-01 13:23:28        -1 run
+          -1 2025-02-25 15:40:24        -1 sbin
+          -1 2025-02-18 14:21:40        -1 srv
+          -1 2025-02-25 21:50:00        -1 sys
+          -1 2025-03-01 12:46:07        -1 tmp
+          -1 2025-02-18 14:21:40        -1 usr
+          -1 2025-02-18 14:21:40        -1 var
+```
+
+Все работает, **sftp**-соединение c `db.etcd.lan` работает.
+
+Инициализируем репозиторий для хранения у **restic**:
+```bash
+root@dbmaster:/mnt# restic -r rclone:etcd-serv:/mnt/restic_backups init
+enter password for new repository: 
+enter password again: 
+created restic repository 4a2d44efd9 at rclone:etcd-serv:/mnt/restic_backups
+
+Please note that knowledge of your password is required to access
+the repository. Losing your password means that your data is
+irrecoverably lost.
+```
+
+Теперь можно делать бэкап:
+```bash
+ restic -r rclone:etcd-serv:/mnt/restic_backups backup --tag master_node_patroni --one-file-system --skip-if-unchanged / 
+```
+
+И проверить то, что снэпшот создался:
+```bash
+restic -r rclone:etcd-serv:/mnt/restic_backups snapshots
+enter password for repository: 
+repository 4a2d44ef opened (version 2, compression level auto)
+ID        Time                 Host        Tags                 Paths  Size
+--------------------------------------------------------------------------------
+7a675871  2025-03-01 13:39:12  dbmaster    master_node_patroni  /      6.499 GiB
+--------------------------------------------------------------------------------
+1 snapshots
+```
+
+Создадим службу и таймер:
+1. `touch /etc/systemd/system/restic.service`
+2. `touch /etc/systemd/system/restic.timer`
+
+Служба выглядит так:
+```bash
+[Unit]
+Description=Restic backup for Patroni Main Node
+After=syslog.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/restic -r rclone:etcd-serv:/mnt/restic_backups backup / --tag master_node_patroni --one-file-system --skip-if-unchanged --verbose=2 
+EnvironmentFile=/root/.restic.env
+AmbientCapabilities=CAP_DAC_READ_SEARCH
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Создал плейбук, который создает репозиторий **Restic**, создает таймер systemd, после чего делает бэкап всей корневой ФС.
+
+![Pasted image 20250301153804](https://github.com/user-attachments/assets/d36c3957-641c-4214-a791-69d0ca879fc7)
+
+## 8. Мысли по улучшению
 
 1. Создавать и раннить ВМ не только средствами самого **Proxmox**, что не совсем удобно и быстро, а используя более подходящие инструменты. Допустим, **Terraform**, и в качестве провайдера к нему тот же **Proxmox** или любой другой инструмент с гипервизором. Как альтернативу, еще можно использовать голый **Alpine** **Linux** или легковесный **Debian** в **Docker** (и уже все настроить там), после чего запустить.
 2. ~~Настроить файрвол нод **Postgres** и **HAProxy** посредством **nftables** (безопасность).~~ 
 3. Заняться сертификатами, самоподписные (**openssl**) более чем подойдут, чтобы трафик и со стороны **etcd** <-> **db slave** был защищен, и **haproxy** <->  **db** **cluster**, а также **rest-api** **Patroni**. Иначе трафик может сниффиться, после чего дампиться тем же **tcpdump** и прочитываться, что крайне небезопасно. `serving insecure client requests on [::]:2379, this is strongly discouraged!` - **etcd** даже возмущается небезопасному соединению.
 4. ~~Вынести **etcd** на отдельную ноду, а лучше на несколько, чтобы предоставить еще большую **high availability**. Желательно таких нод **etcd** иметь от двух.~~
-5. Так же из новой ноды, на которой будет запущен еще один **etcd**, можно сделать бэкапера, который будет копировать всю ФС мастера, например, посредством **restic**. 
+5. ~~Так же из новой ноды, на которой будет запущен еще один **etcd**, можно сделать бэкапера, который будет копировать всю ФС мастера, например, посредством **restic**.~~ 
