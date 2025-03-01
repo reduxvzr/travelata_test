@@ -49,7 +49,7 @@
   tasks:
     - name: Copy etcd file
       ansible.builtin.copy:
-        src: ../config_files/etcd_master
+        src: ../../config_files/etcd/etcd_master
         dest: /etc/default/etcd
         owner: root
         group: root
@@ -71,13 +71,12 @@
           - etcd-client
           - etcd-server
           - etcd-discovery
+          - trash-cli
         state: present
         update_cache: true
 
     - name: Clear old values of the cluster in base
       ansible.builtin.command: etcdctl del "" --prefix
-      # register: etcdctl_output
-      # changed_when: etcdctl_output.rc != 0
       changed_when: false
 
     - name: Restart etcd service
@@ -93,7 +92,7 @@
   tasks:
     - name: Copy etcd file
       ansible.builtin.copy:
-        src: ../config_files/etcd_slave
+        src: ../../config_files/etcd/etcd_slave
         dest: /etc/default/etcd
         owner: root
         group: root
@@ -110,8 +109,6 @@
 
     - name: Clear old values of the cluster in base
       ansible.builtin.command: etcdctl del "" --prefix
-      # register: etcdctl_output
-      # changed_when: etcdctl_output.rc != 0
       changed_when: false
 
     - name: Restart etcd service
@@ -128,7 +125,7 @@
   tasks:
     - name: Copy etcd file
       ansible.builtin.copy:
-        src: ../config_files/etcd_server
+        src: ../../config_files/etcd/etcd_server
         dest: /etc/default/etcd
         owner: root
         group: root
@@ -145,8 +142,6 @@
 
     - name: Clear old values of the cluster in base
       ansible.builtin.command: etcdctl del "" --prefix
-      # register: etcdctl_output
-      # changed_when: etcdctl_output.rc != 0
       changed_when: false
 
     - name: Restart etcd service
@@ -188,7 +183,7 @@
 
     - name: Copy the patroni configuration file to the MASTER
       ansible.builtin.copy:
-        src: ../config_files/patroni_master.yml
+        src: ../../config_files/patroni/patroni_master.yml
         dest: /etc/patroni/config.yml
         owner: postgres
         group: postgres
@@ -209,7 +204,7 @@
 
     - name: Copy the patroni configuration file to the REPLICA
       ansible.builtin.copy:
-        src: ../config_files/patroni_slave.yml
+        src: ../../config_files/patroni/patroni_slave.yml
         dest: /etc/patroni/config.yml
         owner: postgres
         group: postgres
@@ -226,7 +221,7 @@
         update_cache: true
         state: present
 
-    - name: Create unnecessary directory for certs
+    - name: Create necessary directory for certs
       ansible.builtin.file:
         path: /var/lib/postgresql/15/ssl
         state: directory
@@ -245,7 +240,7 @@
 
     - name: Copy certificates on the machines
       ansible.builtin.copy:
-        src: ../certs/
+        src: ../../certs/
         dest: /var/lib/postgresql/15/ssl/
         remote_src: false
         owner: postgres
@@ -259,20 +254,20 @@
         enabled: true
         state: restarted
 
+    - name: Get time for Pantroni initializing
+      ansible.builtin.pause:
+        minutes: 2
+
     - name: Get patronictl status
       ansible.builtin.command: patronictl -c /etc/patroni/config.yml list
       changed_when: false
       register: out
 
-    - name: Get time for Pantroni initializing
-      ansible.builtin.pause:
-        minutes: 2
-
     - name: Print it
       ansible.builtin.debug:
         msg: "{{ out.stdout_lines }}"
 
-# start
+# If patroni cluster started with errors:
 - name: Stop Patroni
   hosts: database
   become: true
@@ -290,8 +285,6 @@
   tasks:
     - name: Clear old values of the cluster in base
       ansible.builtin.command: etcdctl del "" --prefix
-      # register: etcdctl_output
-      # changed_when: etcdctl_output.rc != 0
       changed_when: false
 
     - name: Stop etcd service
@@ -361,7 +354,7 @@
   tasks:
     - name: Edit or ensure config file for haproxy
       ansible.builtin.copy:
-        src: ../config_files/haproxy.cfg
+        src: ../../config_files/haproxy/haproxy.cfg
         dest: /etc/haproxy/haproxy.cfg
         owner: root
         group: root
@@ -380,7 +373,7 @@
   tasks:
     - name: Copy conf on MASTER HAProxy node
       ansible.builtin.copy:
-        src: ../config_files/keepalived_master_haproxy.conf
+        src: ../../config_files/keepalived/keepalived_master_haproxy.conf
         dest: /etc/keepalived/keepalived.conf
         owner: root
         group: root
@@ -399,7 +392,7 @@
   tasks:
     - name: Copy conf on BACKUP HAProxy node
       ansible.builtin.copy:
-        src: ../config_files/keepalived_backup_haproxy.conf
+        src: ../../config_files/keepalived/keepalived_backup_haproxy.conf
         dest: /etc/keepalived/keepalived.conf
         owner: root
         group: root

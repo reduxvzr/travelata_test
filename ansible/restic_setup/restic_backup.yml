@@ -1,0 +1,117 @@
+---
+
+- name: Install packages
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Install restic and rclone
+      ansible.builtin.apt:
+        pkg:
+          - restic
+          - rclone
+        state: present
+        update_cache: true
+
+- name: Configure rclone
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Create directory for storing rclone config
+      ansible.builtin.file:
+        path: /root/.config/rclone
+        state: directory
+        owner: root
+        group: root
+        mode: '0764'
+
+    - name: Copy configuration rclone file to the Master node
+      ansible.builtin.copy:
+        src: ../../config_files/restic/rclone.conf
+        dest: /root/.config/rclone/rclone.conf
+        owner: root
+        group: root
+        mode: '0764'
+
+- name: Create systemd daemon and timer for restic backup
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    - name: Copy service file
+      ansible.builtin.copy:
+        src: ../../config_files/restic/restic.service
+        dest: /etc/systemd/system/restic.service
+        mode: u=rw,g=r,o=x
+        owner: root
+        group: root
+
+    - name: Copy timer file
+      ansible.builtin.copy:
+        src: ../../config_files/restic/restic.timer
+        dest: /etc/systemd/system/restic.timer
+        mode: u=rw,g=r,o=x
+        owner: root
+        group: root
+
+    - name: Create environment file
+      ansible.builtin.file:
+        path: /root/.restic.env
+        state: touch
+        owner: root
+        group: root
+        mode: '0640'
+
+    - name: Scan sha1-hash
+      ansible.builtin.command: sudo -u postgres ssh-keyscan -H db.etcd.lan >> /var/lib/postgresql/.ssh/known_hosts
+      changed_when: true
+
+    - name: Reload daemons
+      ansible.builtin.systemd_service:
+        daemon_reload: true
+
+    - name: Start service
+      ansible.builtin.service:
+        name: restic.service
+        # state: started
+        enabled: true
+
+    - name: Enable timer
+      ansible.builtin.service:
+        name: restic.timer
+        state: started
+        enabled: true
+
+- name: Backup creation
+  hosts: master
+  become: true
+  gather_facts: false
+  tasks:
+    # if this is first run
+    # - name: Initialize repo
+    #   ansible.builtin.command: restic -r rclone:etcd-serv:/mnt/restic_backups init
+    #   changed_when: true
+    #   register: restic_init
+
+    # - name: " "
+    #   ansible.builtin.debug:
+    #     msg: "{{ restic_init.stdout_lines }}"
+
+    - name: Create backup
+      ansible.builtin.command: restic -r rclone:etcd-serv:/mnt/restic_backups backup / --tag master_node_patroni --one-file-system
+      changed_when: true
+      register: backup
+
+    - name: " "
+      ansible.builtin.debug:
+        msg: "{{ backup.stdout_lines }}"
+
+    - name: View restic snapshots in repo
+      ansible.builtin.command: restic -r rclone:etcd-serv:/mnt/restic_backups snapshots
+      changed_when: true
+      register: snapshots
+
+    - name: " "
+      ansible.builtin.debug:
+        msg: "{{ snapshots.stdout_lines }}"

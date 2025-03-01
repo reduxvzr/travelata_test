@@ -1,0 +1,9 @@
+[Unit]
+Decription=Timer for Restic backup service
+
+[Timer]
+OnCalendar=*-*-* 23:45:00
+Persistance=yes
+
+[Install]
+WantedBy=timers.target

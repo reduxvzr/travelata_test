@@ -1,0 +1,14 @@
+[Unit]
+Description=Restic backup for Patroni Main Node
+After=syslog.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/restic -r rclone:etcd-serv:/mnt/restic_backups backup / --tag master_node_patroni --one-file-system --skip-if-unchanged --verbose=2 
+EnvironmentFile=/root/.restic.env
+AmbientCapabilities=CAP_DAC_READ_SEARCH
+
+[Install]
+WantedBy=multi-user.target

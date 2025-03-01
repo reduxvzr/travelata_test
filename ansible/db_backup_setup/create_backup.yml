@@ -69,6 +69,15 @@
         state: started
         enabled: true
 
+    # If patroni cluster is new, but pgbackrest contains old backups from previous clusters
+    # - name: Stop stanza
+    #   ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info --force stop
+    #   changed_when: true
+
+    # - name: Delete stanza
+    #   ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info --force stanza-delete
+    #   changed_when: true
+
     - name: Create stanza
       ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info stanza-create
       changed_when: true
@@ -76,6 +85,11 @@
     - name: Check
       ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info check
       changed_when: true
+      register: pgbackrest_check
+
+    - name: Print pgbackrest check
+      ansible.builtin.debug:
+        msg: "{{ pgbackrest_check.stdout_lines }}"
 
     - name: Perform first backup of DB
       ansible.builtin.command: sudo -u postgres pgbackrest --stanza=testcluster --log-level-console=info backup
@@ -102,7 +116,7 @@
     - name: Create cron job for diff backup
       ansible.builtin.cron:
         name: diff backup
-        weekday: "4"
+        weekday: "3"
         minute: "0"
         hour: "18"
         user: postgres
@@ -111,7 +125,7 @@
     - name: Create cron job for incr backup
       ansible.builtin.cron:
         name: incr backup
-        weekday: "4"
+        weekday: "1-6"
         minute: "0"
         hour: "18"
         user: postgres

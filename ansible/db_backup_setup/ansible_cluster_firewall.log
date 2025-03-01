@@ -1695,3 +1695,183 @@
 2025-02-28 17:27:57,603 p=25078 u=digitd n=ansible | db.etcd.lan                : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-28 17:27:57,603 p=25078 u=digitd n=ansible | db.master.lan              : ok=12   changed=8    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
 2025-02-28 17:27:57,603 p=25078 u=digitd n=ansible | db.slave.lan               : ok=3    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-03-01 11:12:33,951 p=178616 u=digitd n=ansible INFO| PLAY [Create directory for storing backups] *********************************************************************************************************************************************************************************************************************************
+2025-03-01 11:12:33,957 p=178616 u=digitd n=ansible INFO| TASK [Create and setup rights] **********************************************************************************************************************************************************************************************************************************************
+2025-03-01 11:12:36,673 p=178616 u=digitd n=ansible INFO| ok: [db.etcd.lan]
+2025-03-01 11:12:36,674 p=178616 u=digitd n=ansible INFO| TASK [Create .ssh directory and authorized_keys file] ***********************************************************************************************************************************************************************************************************************
+2025-03-01 11:12:37,904 p=178616 u=digitd n=ansible INFO| ok: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh', 'state': 'directory', 'mode': '0700'})
+2025-03-01 11:12:38,394 p=178616 u=digitd n=ansible INFO| changed: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh/authorized_keys', 'state': 'touch', 'mode': '0600'})
+2025-03-01 11:12:38,396 p=178616 u=digitd n=ansible INFO| PLAY [Setup pgbackrest (postgres backup tool) on the patroni nodes] *********************************************************************************************************************************************************************************************************
+2025-03-01 11:12:39,515 p=178616 u=digitd n=ansible INFO| TASK [Ensure that pgbackrest package is installed] **************************************************************************************************************************************************************************************************************************
+2025-03-01 11:13:46,578 p=178616 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-03-01 11:13:49,223 p=180892 u=digitd n=ansible INFO| PLAY [Create directory for storing backups] *********************************************************************************************************************************************************************************************************************************
+2025-03-01 11:13:49,227 p=180892 u=digitd n=ansible INFO| TASK [Create and setup rights] **********************************************************************************************************************************************************************************************************************************************
+2025-03-01 11:13:55,253 p=180892 u=digitd n=ansible INFO| ok: [db.etcd.lan]
+2025-03-01 11:13:55,254 p=180892 u=digitd n=ansible INFO| TASK [Create .ssh directory and authorized_keys file] ***********************************************************************************************************************************************************************************************************************
+2025-03-01 11:13:55,871 p=180892 u=digitd n=ansible INFO| ok: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh', 'state': 'directory', 'mode': '0700'})
+2025-03-01 11:13:56,373 p=180892 u=digitd n=ansible INFO| changed: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh/authorized_keys', 'state': 'touch', 'mode': '0600'})
+2025-03-01 11:13:56,375 p=180892 u=digitd n=ansible INFO| PLAY [Setup pgbackrest (postgres backup tool) on the patroni nodes] *********************************************************************************************************************************************************************************************************
+2025-03-01 11:13:56,567 p=180892 u=digitd n=ansible INFO| TASK [Ensure that pgbackrest package is installed] **************************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:09,903 p=180892 u=digitd n=ansible ERROR|  [ERROR]: User interrupted execution
+
+2025-03-01 11:15:16,067 p=183499 u=digitd n=ansible INFO| PLAY [Create directory for storing backups] ******************************************************************************************************************************************************************************************************
+2025-03-01 11:15:16,071 p=183499 u=digitd n=ansible INFO| TASK [Create and setup rights] *******************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:16,999 p=183499 u=digitd n=ansible INFO| ok: [db.etcd.lan]
+2025-03-01 11:15:17,000 p=183499 u=digitd n=ansible INFO| TASK [Create .ssh directory and authorized_keys file] ********************************************************************************************************************************************************************************************
+2025-03-01 11:15:17,502 p=183499 u=digitd n=ansible INFO| ok: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh', 'state': 'directory', 'mode': '0700'})
+2025-03-01 11:15:17,835 p=183499 u=digitd n=ansible INFO| changed: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh/authorized_keys', 'state': 'touch', 'mode': '0600'})
+2025-03-01 11:15:17,837 p=183499 u=digitd n=ansible INFO| PLAY [Setup pgbackrest (postgres backup tool) on the patroni nodes] ******************************************************************************************************************************************************************************
+2025-03-01 11:15:17,927 p=183499 u=digitd n=ansible INFO| TASK [Copy files to the machines] ****************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:19,411 p=183499 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-03-01 11:15:24,537 p=183499 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-03-01 11:15:24,538 p=183499 u=digitd n=ansible INFO| TASK [Scan sha1-hash] ****************************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:30,630 p=183499 u=digitd n=ansible INFO| changed: [db.slave.lan]
+2025-03-01 11:15:31,854 p=183499 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 11:15:31,855 p=183499 u=digitd n=ansible INFO| PLAY [Start backuping] ***************************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:32,679 p=183499 u=digitd n=ansible INFO| TASK [Ensure that patroni is running] ************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:43,201 p=183499 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-03-01 11:15:43,202 p=183499 u=digitd n=ansible INFO| TASK [Create stanza] *****************************************************************************************************************************************************************************************************************************
+2025-03-01 11:15:49,254 p=183499 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 11:15:49,255 p=183499 u=digitd n=ansible INFO| TASK [Check] *************************************************************************************************************************************************************************************************************************************
+2025-03-01 11:16:14,544 p=183499 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 11:16:14,546 p=183499 u=digitd n=ansible INFO| TASK [Print pgbackrest check] ********************************************************************************************************************************************************************************************************************
+2025-03-01 11:16:16,684 p=183499 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": [
+        "2025-03-01 11:15:50.377 P00   INFO: check command begin 2.54.2: --exec-id=556328-29463cd0 --log-level-console=info --pg1-path=/var/lib/postgresql/15/data --pg1-port=5050 --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/mnt/pgbackrest_backups --repo1-sftp-host=db.etcd.lan --repo1-sftp-host-key-hash-type=sha1 --repo1-sftp-host-user=postgres --repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_ed25519 --repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_ed25519.pub --repo1-type=sftp --stanza=testcluster",
+        "2025-03-01 11:15:50.390 P00   INFO: check repo1 configuration (primary)",
+        "2025-03-01 11:16:05.773 P00   INFO: check repo1 archive for WAL (primary)",
+        "2025-03-01 11:16:14.492 P00   INFO: WAL segment 000000030000000000000020 successfully archived to '/mnt/pgbackrest_backups/archive/testcluster/15-1/0000000300000000/000000030000000000000020-7e2addfd3b98ba267f0c2b6a873cdaa4843dac6e.gz' on repo1",
+        "2025-03-01 11:16:14.492 P00   INFO: check command end: completed successfully (24118ms)"
+    ]
+}
+2025-03-01 11:16:17,738 p=183499 u=digitd n=ansible INFO| TASK [Perform first backup of DB] ****************************************************************************************************************************************************************************************************************
+2025-03-01 11:16:25,844 p=183499 u=digitd n=ansible INFO| fatal: [db.master.lan]: FAILED! => {"changed": true, "cmd": ["sudo", "-u", "postgres", "pgbackrest", "--stanza=testcluster", "--log-level-console=info", "backup"], "delta": "0:00:01.437411", "end": "2025-03-01 11:16:25.801198", "msg": "non-zero return code", "rc": 56, "start": "2025-03-01 11:16:24.363787", "stderr": "", "stderr_lines": [], "stdout": "2025-03-01 11:16:24.391 P00   INFO: backup command begin 2.54.2: --exec-id=556397-7cb6e796 --log-level-console=info --pg1-path=/var/lib/postgresql/15/data --pg1-port=5050 --process-max=4 --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/mnt/pgbackrest_backups --repo1-retention-diff=2 --repo1-retention-full=2 --repo1-sftp-host=db.etcd.lan --repo1-sftp-host-key-hash-type=sha1 --repo1-sftp-host-user=postgres --repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_ed25519 --repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_ed25519.pub --repo1-type=sftp --stanza=testcluster --start-fast\n2025-03-01 11:16:25.649 P00   WARN: unable to check pg1: [DbConnectError] unable to connect to 'dbname='postgres' port=5050': connection to server on socket \"/var/run/postgresql/.s.PGSQL.5050\" failed: ВАЖНО:  система баз данных останавливается\n2025-03-01 11:16:25.792 P00  ERROR: [056]: unable to find primary cluster - cannot proceed\n                                    HINT: are all available clusters in recovery?\n2025-03-01 11:16:25.793 P00   INFO: backup command end: aborted with exception [056]", "stdout_lines": ["2025-03-01 11:16:24.391 P00   INFO: backup command begin 2.54.2: --exec-id=556397-7cb6e796 --log-level-console=info --pg1-path=/var/lib/postgresql/15/data --pg1-port=5050 --process-max=4 --repo1-block --repo1-bundle --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/mnt/pgbackrest_backups --repo1-retention-diff=2 --repo1-retention-full=2 --repo1-sftp-host=db.etcd.lan --repo1-sftp-host-key-hash-type=sha1 --repo1-sftp-host-user=postgres --repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_ed25519 --repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_ed25519.pub --repo1-type=sftp --stanza=testcluster --start-fast", "2025-03-01 11:16:25.649 P00   WARN: unable to check pg1: [DbConnectError] unable to connect to 'dbname='postgres' port=5050': connection to server on socket \"/var/run/postgresql/.s.PGSQL.5050\" failed: ВАЖНО:  система баз данных останавливается", "2025-03-01 11:16:25.792 P00  ERROR: [056]: unable to find primary cluster - cannot proceed", "                                    HINT: are all available clusters in recovery?", "2025-03-01 11:16:25.793 P00   INFO: backup command end: aborted with exception [056]"]}
+2025-03-01 11:16:25,844 p=183499 u=digitd n=ansible INFO| PLAY RECAP ***************************************************************************************************************************************************************************************************************************************
+2025-03-01 11:16:26,595 p=183499 u=digitd n=ansible INFO| db.etcd.lan                : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-03-01 11:16:27,628 p=183499 u=digitd n=ansible INFO| db.master.lan              : ok=6    changed=3    unreachable=0    failed=1    skipped=0    rescued=0    ignored=0   
+2025-03-01 11:16:28,378 p=183499 u=digitd n=ansible INFO| db.slave.lan               : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-03-01 12:46:05,187 p=338139 u=digitd n=ansible INFO| PLAY [Create directory for storing backups] ******************************************************************************************************************************************************************************************************
+2025-03-01 12:46:05,191 p=338139 u=digitd n=ansible INFO| TASK [Create and setup rights] *******************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:06,527 p=338139 u=digitd n=ansible INFO| ok: [db.etcd.lan]
+2025-03-01 12:46:06,528 p=338139 u=digitd n=ansible INFO| TASK [Create .ssh directory and authorized_keys file] ********************************************************************************************************************************************************************************************
+2025-03-01 12:46:07,048 p=338139 u=digitd n=ansible INFO| ok: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh', 'state': 'directory', 'mode': '0700'})
+2025-03-01 12:46:07,423 p=338139 u=digitd n=ansible INFO| changed: [db.etcd.lan] => (item={'path': '/var/lib/postgresql/15/data/.ssh/authorized_keys', 'state': 'touch', 'mode': '0600'})
+2025-03-01 12:46:07,425 p=338139 u=digitd n=ansible INFO| PLAY [Setup pgbackrest (postgres backup tool) on the patroni nodes] ******************************************************************************************************************************************************************************
+2025-03-01 12:46:07,465 p=338139 u=digitd n=ansible INFO| TASK [Copy files to the machines] ****************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:09,280 p=338139 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-03-01 12:46:09,332 p=338139 u=digitd n=ansible INFO| ok: [db.slave.lan]
+2025-03-01 12:46:09,339 p=338139 u=digitd n=ansible INFO| TASK [Scan sha1-hash] ****************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:10,599 p=338139 u=digitd n=ansible INFO| changed: [db.slave.lan]
+2025-03-01 12:46:10,779 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:10,781 p=338139 u=digitd n=ansible INFO| PLAY [Start backuping] ***************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:10,814 p=338139 u=digitd n=ansible INFO| TASK [Ensure that patroni is running] ************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:12,637 p=338139 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-03-01 12:46:12,638 p=338139 u=digitd n=ansible INFO| TASK [Create stanza] *****************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:13,816 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:13,817 p=338139 u=digitd n=ansible INFO| TASK [Check] *************************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:16,699 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:16,700 p=338139 u=digitd n=ansible INFO| TASK [Print pgbackrest check] ********************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:19,205 p=338139 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": [
+        "2025-03-01 12:46:14.235 P00   INFO: check command begin 2.54.2: --exec-id=2059-330062b0 --log-level-console=info --pg1-path=/var/lib/postgresql/15/data --pg1-port=5050 --repo1-cipher-pass=<redacted> --repo1-cipher-type=aes-256-cbc --repo1-path=/mnt/pgbackrest_backups --repo1-sftp-host=db.etcd.lan --repo1-sftp-host-key-hash-type=sha1 --repo1-sftp-host-user=postgres --repo1-sftp-private-key-file=/var/lib/postgresql/.ssh/id_ed25519 --repo1-sftp-public-key-file=/var/lib/postgresql/.ssh/id_ed25519.pub --repo1-type=sftp --stanza=testcluster",
+        "2025-03-01 12:46:14.248 P00   INFO: check repo1 configuration (primary)",
+        "2025-03-01 12:46:14.590 P00   INFO: check repo1 archive for WAL (primary)",
+        "2025-03-01 12:46:16.514 P00   INFO: WAL segment 0000000B000000000000002B successfully archived to '/mnt/pgbackrest_backups/archive/testcluster/15-1/0000000B00000000/0000000B000000000000002B-8e890ea4ba899e6d5b03ab8d55e243a5d8a9c221.gz' on repo1",
+        "2025-03-01 12:46:16.514 P00   INFO: check command end: completed successfully (2282ms)"
+    ]
+}
+2025-03-01 12:46:19,713 p=338139 u=digitd n=ansible INFO| TASK [Perform first backup of DB] ****************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:29,461 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:29,462 p=338139 u=digitd n=ansible INFO| TASK [Show info about backups] *******************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:30,067 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:30,068 p=338139 u=digitd n=ansible INFO| TASK [Print it] **********************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:30,212 p=338139 u=digitd n=ansible INFO| ok: [db.master.lan] => {
+    "msg": [
+        "stanza: testcluster",
+        "    status: ok",
+        "    cipher: aes-256-cbc",
+        "",
+        "    db (current)",
+        "        wal archive min/max (15): 000000010000000000000001/0000000B000000000000002D",
+        "",
+        "        full backup: 20250228-165201F",
+        "            timestamp start/stop: 2025-02-28 16:52:01+03 / 2025-02-28 16:52:10+03",
+        "            wal start/stop: 000000020000000000000006 / 000000020000000000000006",
+        "            database size: 22.0MB, database backup size: 22.0MB",
+        "            repo1: backup size: 2.9MB",
+        "",
+        "        incr backup: 20250228-165201F_20250228-165238I",
+        "            timestamp start/stop: 2025-02-28 16:52:38+03 / 2025-02-28 16:52:51+03",
+        "            wal start/stop: 000000020000000000000009 / 000000020000000000000009",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full",
+        "",
+        "        incr backup: 20250228-165201F_20250228-165503I",
+        "            timestamp start/stop: 2025-02-28 16:55:03+03 / 2025-02-28 16:55:12+03",
+        "            wal start/stop: 00000002000000000000000C / 00000002000000000000000C",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 1 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-170347I",
+        "            timestamp start/stop: 2025-02-28 17:03:47+03 / 2025-02-28 17:03:53+03",
+        "            wal start/stop: 00000002000000000000000E / 00000002000000000000000F",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 2 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-171133I",
+        "            timestamp start/stop: 2025-02-28 17:11:33+03 / 2025-02-28 17:11:40+03",
+        "            wal start/stop: 000000020000000000000011 / 000000020000000000000012",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 3 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-171318I",
+        "            timestamp start/stop: 2025-02-28 17:13:18+03 / 2025-02-28 17:13:31+03",
+        "            wal start/stop: 000000020000000000000014 / 000000020000000000000015",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 4 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-171751I",
+        "            timestamp start/stop: 2025-02-28 17:17:51+03 / 2025-02-28 17:17:57+03",
+        "            wal start/stop: 000000020000000000000017 / 000000020000000000000018",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 5 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-172032I",
+        "            timestamp start/stop: 2025-02-28 17:20:32+03 / 2025-02-28 17:20:42+03",
+        "            wal start/stop: 00000002000000000000001B / 00000002000000000000001B",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 6 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250228-172744I",
+        "            timestamp start/stop: 2025-02-28 17:27:44+03 / 2025-02-28 17:27:50+03",
+        "            wal start/stop: 00000002000000000000001D / 00000002000000000000001E",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 7 incr",
+        "",
+        "        incr backup: 20250228-165201F_20250301-124620I",
+        "            timestamp start/stop: 2025-03-01 12:46:20+03 / 2025-03-01 12:46:26+03",
+        "            wal start/stop: 0000000B000000000000002D / 0000000B000000000000002D",
+        "            database size: 22.0MB, database backup size: 8.3KB",
+        "            repo1: backup size: 440B",
+        "            backup reference total: 1 full, 8 incr"
+    ]
+}
+2025-03-01 12:46:30,287 p=338139 u=digitd n=ansible INFO| TASK [Create cron job for full backup] ***********************************************************************************************************************************************************************************************************
+2025-03-01 12:46:30,791 p=338139 u=digitd n=ansible INFO| ok: [db.master.lan]
+2025-03-01 12:46:30,792 p=338139 u=digitd n=ansible INFO| TASK [Create cron job for diff backup] ***********************************************************************************************************************************************************************************************************
+2025-03-01 12:46:31,444 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:31,445 p=338139 u=digitd n=ansible INFO| TASK [Create cron job for incr backup] ***********************************************************************************************************************************************************************************************************
+2025-03-01 12:46:32,017 p=338139 u=digitd n=ansible INFO| changed: [db.master.lan]
+2025-03-01 12:46:32,018 p=338139 u=digitd n=ansible INFO| PLAY RECAP ***************************************************************************************************************************************************************************************************************************************
+2025-03-01 12:46:32,044 p=338139 u=digitd n=ansible INFO| db.etcd.lan                : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-03-01 12:46:32,069 p=338139 u=digitd n=ansible INFO| db.master.lan              : ok=12   changed=7    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+2025-03-01 12:46:32,186 p=338139 u=digitd n=ansible INFO| db.slave.lan               : ok=2    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
