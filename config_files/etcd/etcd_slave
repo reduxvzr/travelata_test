@@ -24,7 +24,8 @@ ETCD_INITIAL_ADVERTISE_PEER_URLS="http://192.168.2.17:2380"
 
 ETCD_INITIAL_CLUSTER="masterpg=http://192.168.2.16:2380,slavepg=http://192.168.2.17:2380,etcdpg=http://192.168.2.18:2380"
 
-ETCD_INITIAL_CLUSTER_STATE="existing"
+ETCD_INITIAL_CLUSTER_STATE="new"
+#ETCD_INITIAL_CLUSTER_STATE="existing"
 
 ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
 
@@ -36,7 +37,11 @@ ETCD_AUTO_COMPACTION_MODE="periodic"
 
 ETCD_AUTO_COMPACTION_RETENTION="1h"
 
-
-# If I wanna use ssl-certificates for etcd, i should use this variables:
-#ETCD_CERT_FILE= .../path/... for certificate
-#ETCD_KEY_FILE= .../path/.. for private key
+# ETCD_CLIENT_CERT_AUTH="true"
+# ETCD_TRUSTED_CA_FILE="/etc/etcd/etcd-certs/ca.crt"
+# ETCD_CERT_FILE="/etc/etcd/etcd-certs/etcd-node3.crt"
+# ETCD_KEY_FILE="/etc/etcd/etcd-certs/etcd-node3.key"
+# ETCD_PEER_CLIENT_CERT_AUTH="true"
+# ETCD_PEER_TRUSTED_CA_FILE="/etc/etcd/etcd-certs/ca.crt"
+# ETCD_PEER_CERT_FILE="/etc/etcd/etcd-certs/etcd-node3.crt"
+# ETCD_PEER_KEY_FILE="/etc/etcd/etcd-certs/etcd-node3.key"

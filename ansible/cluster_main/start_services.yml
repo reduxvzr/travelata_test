@@ -240,7 +240,7 @@
 
     - name: Copy certificates on the machines
       ansible.builtin.copy:
-        src: ../../certs/
+        src: ../../certs/psql/
         dest: /var/lib/postgresql/15/ssl/
         remote_src: false
         owner: postgres
