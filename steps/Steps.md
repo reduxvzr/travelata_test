@@ -957,10 +957,115 @@ WantedBy=multi-user.target
 
 ![Pasted image 20250301153804](https://github.com/user-attachments/assets/d36c3957-641c-4214-a791-69d0ca879fc7)
 
-## 8. Мысли по улучшению
+## 8. Шифрование 
+
+Для лучшей безопасности решил сделать сертификаты, чтобы соединение между нодами кластера нельзя было скомпрометировать извне. 
+
+Создал центр сертификации, а после и ключи, небольшим скриптом раскидал все файлы на нужные ноды посредством **scp**.
+
+Скрипт создания ключей выглядит следующим образом. Сначала создаю центр сертификации, раскидываю полученные файлы по директориям:
+
+```bash
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -subj "/CN=etcd-ca" -days 7300 -out ca.crt
+
+for dir in ../etcd-node ../master-node ../slave-node; do
+cp -v {ca.crt,ca.key} "$dir"
+done
+```
+
+После чего генерирую публичные и приватные ключи:
+```bash
+# Generate a private key
+openssl genrsa -out etcd-node1.key 2048
+
+# Create temp file for config
+cat > temp.cnf <<EOF
+[ req ]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+[ req_distinguished_name ]
+[ v3_req ]
+subjectAltName = @alt_names
+[ alt_names ]
+IP.1 = 192.168.2.18
+IP.2 = 127.0.0.1
+EOF
+
+# Create a csr
+openssl req -new -key etcd-node1.key -out etcd-node1.csr \
+-subj "/C=US/ST=YourState/L=YourCity/O=YourOrganization/OU=YourUnit/CN=etcd-node1" \
+-config temp.cnf
+
+#Sign the cert
+openssl x509 -req -in etcd-node1.csr -CA ca.crt -CAkey ca.key -CAcreateserial \
+-out etcd-node1.crt -days 7300 -sha256 -extensions v3_req -extfile temp.cnf
+
+# Verify the cert and be sure you see Subject Name Alternative
+openssl x509 -in etcd-node1.crt -text -noout | grep -A1 "Subject Alternative Name"
+
+# Remove temp file
+rm temp.cnf
+# Create directory for storing
+ssh etcd "mkdir -p /etc/etcd/etcd-certs/"
+
+# Copy files
+scp ./etcd-node* ca.crt etcd:/etc/etcd/etcd-certs/
+
+ssh etcd "chown etcd:etcd -R /etc/etcd/"
+
+# Give writes to postgres user read key file
+ssh etcd "chown etcd:etcd -R /etc/etcd/"
+
+ssh etcd "chmod 640 /etc/etcd/etcd-certs/*.key"
+ssh etcd "ls -l /etc/etcd/etcd-certs/*.key"
+
+``` 
+
+Такие же скрипты сделал для `db.master.lan` и `db.slave.lan`, поменяв **IP.1**. 
+
+![Pasted image 20250302161308](https://github.com/user-attachments/assets/bf9b2776-e585-46f9-a8f1-9d5955ce94eb)
+
+После перезапустил кластер **etcd** и получил шифрование трафика (как и **peer**, так и **client**).
+```bash
+root@etcd:~# etcdctl   --endpoints=https://192.168.2.16:2379,https://192.168.2.17:2379,https://192.168.2.18:2379   --cacert=/etc/etcd/etcd-certs/ca.crt   --cert=/etc/etcd/etcd-certs/etcd-node1.crt   --key=/etc/etcd/etcd-certs/etcd-node1.key   endpoint status --write-out=table
++---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
+|         ENDPOINT          |        ID        | VERSION | DB SIZE | IS LEADER | IS LEARNER | RAFT TERM | RAFT INDEX | RAFT APPLIED INDEX | ERRORS |
++---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
+| https://192.168.2.16:2379 | 671c408bce8fb03c |  3.5.16 |   20 kB |     false |      false |         3 |          9 |                  9 |        |
+| https://192.168.2.17:2379 |  b6d4fe4f3346acb |  3.5.16 |   20 kB |     false |      false |         3 |          9 |                  9 |        |
+| https://192.168.2.18:2379 | feb950520d2b15b7 |  3.4.23 |   20 kB |      true |      false |         3 |          9 |                  9 |        |
++---------------------------+------------------+---------+---------+-----------+------------+-----------+------------+--------------------+--------+
+root@etcd:~# etcdctl   --endpoints=https://192.168.2.16:2379,https://192.168.2.17:2379,https://192.168.2.18:2379   --cacert=/etc/etcd/etcd-certs/ca.crt   --cert=/etc/etcd/etcd-certs/etcd-node1.crt   --key=/etc/etcd/etcd-certs/etcd-node1.key  member list --write-out=table
++------------------+---------+----------+---------------------------+---------------------------+------------+
+|        ID        | STATUS  |   NAME   |        PEER ADDRS         |       CLIENT ADDRS        | IS LEARNER |
++------------------+---------+----------+---------------------------+---------------------------+------------+
+|  b6d4fe4f3346acb | started |  slavepg | https://192.168.2.17:2380 | https://192.168.2.17:2379 |      false |
+| 671c408bce8fb03c | started | masterpg | https://192.168.2.16:2380 | https://192.168.2.16:2379 |      false |
+| feb950520d2b15b7 | started |   etcdpg | https://192.168.2.18:2380 | https://192.168.2.18:2379 |      false |
++------------------+---------+----------+---------------------------+---------------------------+------------+
+root@etcd:~# etcdctl   --endpoints=https://192.168.2.16:2379,https://192.168.2.17:2379,https://192.168.2.18:2379   --cacert=/etc/etcd/etcd-certs/ca.crt   --cert=/etc/etcd/etcd-certs/etcd-node1.crt   --key=/etc/etcd/etcd-certs/etcd-node1.key  endpoint health --write-out=table
++---------------------------+--------+-------------+-------+
+|         ENDPOINT          | HEALTH |    TOOK     | ERROR |
++---------------------------+--------+-------------+-------+
+| https://192.168.2.18:2379 |   true | 27.631485ms |       |
+| https://192.168.2.17:2379 |   true | 27.194669ms |       |
+| https://192.168.2.16:2379 |   true | 31.394881ms |       |
++---------------------------+--------+-------------+-------+
+```
+
+Создал скрипт, который создает **PEM**-файл, в котором будет сразу и ключ, и сертификат (это необходимо для Rest-API Patroni):
+```bash
+ssh masterdb "sudo sh -c 'cat /var/lib/postgresql/15/ssl/cluster.crt /var/lib/postgresql/15/ssl/cluster.key > /var/lib/postgresql/15/ssl/cluster.pem'"
+ssh masterdb "sudo chown postgres:postgres /var/lib/postgresql/15/ssl/cluster.pem"
+ssh masterdb "sudo chmod 600 /var/lib/postgresql/15/ssl/cluster.pem"
+```
+
+Теперь у Rest-API Patroni есть шифрование, при curl-запросе попытки подсоединиться по http будут отбрасываться.
+## 9. Мысли по улучшению
 
 1. Создавать и раннить ВМ не только средствами самого **Proxmox**, что не совсем удобно и быстро, а используя более подходящие инструменты. Допустим, **Terraform**, и в качестве провайдера к нему тот же **Proxmox** или любой другой инструмент с гипервизором. Как альтернативу, еще можно использовать голый **Alpine** **Linux** или легковесный **Debian** в **Docker** (и уже все настроить там), после чего запустить.
 2. ~~Настроить файрвол нод **Postgres** и **HAProxy** посредством **nftables** (безопасность).~~ 
-3. Заняться сертификатами, самоподписные (**openssl**) более чем подойдут, чтобы трафик и со стороны **etcd** <-> **db slave** был защищен, и **haproxy** <->  **db** **cluster**, а также **rest-api** **Patroni**. Иначе трафик может сниффиться, после чего дампиться тем же **tcpdump** и прочитываться, что крайне небезопасно. `serving insecure client requests on [::]:2379, this is strongly discouraged!` - **etcd** даже возмущается небезопасному соединению.
+3. ~~Заняться сертификатами, самоподписные (**openssl**) более чем подойдут, чтобы трафик и со стороны **etcd** <-> **db slave** был защищен, и **haproxy** <->  **db** **cluster**, а также **rest-api** **Patroni**. Иначе трафик может сниффиться, после чего дампиться тем же **tcpdump** и прочитываться, что крайне небезопасно. `serving insecure client requests on [::]:2379, this is strongly discouraged!` - **etcd** даже возмущается небезопасному соединению.~~
 4. ~~Вынести **etcd** на отдельную ноду, а лучше на несколько, чтобы предоставить еще большую **high availability**. Желательно таких нод **etcd** иметь от двух.~~
 5. ~~Так же из новой ноды, на которой будет запущен еще один **etcd**, можно сделать бэкапера, который будет копировать всю ФС мастера, например, посредством **restic**.~~ 
