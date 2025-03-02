@@ -35,3 +35,6 @@ ssh etcd "mkdir -p /etc/etcd/etcd-certs/"
 scp ./etcd-node* ca.crt etcd:/etc/etcd/etcd-certs/
 
 ssh etcd "chown etcd:etcd -R /etc/etcd/"
+
+ssh etcd "chmod 640 /etc/etcd/etcd-certs/*.key"
+ssh etcd "ls -l /etc/etcd/etcd-certs/*.key"

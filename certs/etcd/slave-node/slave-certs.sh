@@ -35,3 +35,8 @@ ssh slavedb "mkdir -p /etc/etcd/etcd-certs/"
 scp ./etcd-node* ca.crt slavedb:/etc/etcd/etcd-certs/
 
 ssh slavedb "chown etcd:etcd -R /etc/etcd/"
+
+ssh slavedb "usermod -aG etcd postgres"
+
+ssh slavedb "chmod 640 /etc/etcd/etcd-certs/*.key"
+ssh slavedb "ls -l /etc/etcd/etcd-certs/*.key"
